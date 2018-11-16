@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "dubbo.zk.registry",
+      "type": "java.lang.String",
+      "description": "Description for dubbo.zk.registry."
+  }
+] }

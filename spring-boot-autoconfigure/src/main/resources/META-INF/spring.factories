@@ -1,0 +1,13 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.springboot.boot.tkmapper.MapperAutoConfiguration,\
+com.springboot.boot.aoplog.AopLoggerAutoConfiguration,\
+com.springboot.boot.alimq.config.AliMQAutoConfiguration,\
+com.springboot.boot.qiniu.QiniuAutoConfiguration,\
+com.springboot.boot.swagger.Swagger2AutoConfiguration,\
+com.springboot.boot.dubbo.DubboConsumerAutoConfiguration,\
+com.springboot.boot.dubbo.DubboProviderAutoConfiguration,\
+com.springboot.boot.druid.DruidAutoConfiguration,\
+com.springboot.boot.error.exception.ExceptionHandlerAutoConfiguration,\
+com.springboot.boot.alimns.MnsAutoConfiguration,\
+com.springboot.boot.redis.RedisClientAutoConfiguration,\
+com.springboot.boot.web.CORSAutoConfiguration
