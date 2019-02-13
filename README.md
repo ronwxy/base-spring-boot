@@ -1,7 +1,6 @@
 
 ### 主要版本 
-- springboot 1.5.13.RELEASE
-- spring 4.3.17.RELEASE     
+- springboot 2.0.5.RELEASE 
 
 1.在pom.xml文件中引入依赖管理 
 ```xml
