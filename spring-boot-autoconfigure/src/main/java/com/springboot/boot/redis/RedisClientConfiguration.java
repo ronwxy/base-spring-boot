@@ -148,8 +148,7 @@ public class RedisClientConfiguration {
 
         private List<RedisNode> createSentinels(RedisProperties.Sentinel sentinel) {
             List<RedisNode> nodes = new ArrayList<RedisNode>();
-            for (String node : StringUtils
-                    .commaDelimitedListToStringArray(sentinel.getNodes())) {
+            for (String node : sentinel.getNodes()) {
                 try {
                     String[] parts = StringUtils.split(node, ":");
                     Assert.state(parts.length == 2, "Must be defined as 'host:port'");
@@ -181,7 +180,7 @@ public class RedisClientConfiguration {
             config.setMaxTotal(props.getMaxActive());
             config.setMaxIdle(props.getMaxIdle());
             config.setMinIdle(props.getMinIdle());
-            config.setMaxWaitMillis(props.getMaxWait());
+            config.setMaxWaitMillis(props.getMaxWait().toMillis());
             return config;
         }
 

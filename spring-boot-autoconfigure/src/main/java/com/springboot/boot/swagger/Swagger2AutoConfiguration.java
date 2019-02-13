@@ -177,7 +177,7 @@ public class Swagger2AutoConfiguration {
          */
         private String buildLocalSwaggerDocsUrl() throws UnknownHostException, MalformedURLException {
             ServerProperties sp = context.getBean(ServerProperties.class);
-            String root = (sp.getContextPath() == null) ? "" : sp.getContextPath();
+            String root = (sp.getServlet().getContextPath() == null) ? "" : sp.getServlet().getContextPath();
             Integer port = (sp.getPort() == null) ? 8080 : sp.getPort();
             String host = InetAddress.getLocalHost().getHostAddress();
 

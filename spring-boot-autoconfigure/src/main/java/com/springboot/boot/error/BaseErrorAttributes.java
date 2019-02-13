@@ -1,12 +1,13 @@
 package com.springboot.boot.error;
 
 import com.springboot.boot.error.exception.BizException;
-import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.ServletException;
 import java.io.PrintWriter;
@@ -16,10 +17,10 @@ import java.util.Map;
 
 public class BaseErrorAttributes extends DefaultErrorAttributes {
     @Override
-    public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes, boolean includeStackTrace) {
+    public Map<String, Object> getErrorAttributes(WebRequest webRequest, boolean includeStackTrace) {
         Map<String, Object> errorAttributes = new LinkedHashMap<String, Object>();
-        addStatus(errorAttributes, requestAttributes);
-        addErrorDetails(errorAttributes, requestAttributes, includeStackTrace);
+        addStatus(errorAttributes, webRequest);
+        addErrorDetails(errorAttributes, webRequest, includeStackTrace);
         return errorAttributes;
     }
 
@@ -73,8 +74,8 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
     }
 
     private void addErrorDetails(Map<String, Object> errorAttributes,
-                                 RequestAttributes requestAttributes, boolean includeStackTrace) {
-        Throwable error = getError(requestAttributes);
+                                 WebRequest webRequest, boolean includeStackTrace) {
+        Throwable error = getError(webRequest);
         if (error != null) {
             while (error instanceof ServletException && error.getCause() != null) {
                 error = error.getCause();
@@ -85,7 +86,7 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
                 addStackTrace(errorAttributes, error);
             }
         }
-        Object message = getAttribute(requestAttributes, "javax.servlet.error.message");
+        Object message = getAttribute(webRequest, "javax.servlet.error.message");
         if ((!StringUtils.isEmpty(message) || errorAttributes.get(BizException.ERROR_MESSAGE) == null)
                 && !(error instanceof BindingResult)) {
             errorAttributes.put(BizException.ERROR_MESSAGE,

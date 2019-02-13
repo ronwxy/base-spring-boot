@@ -1,13 +1,13 @@
 package com.springboot.boot.error.exception;
 
 import com.springboot.boot.error.BaseErrorAttributes;
-import com.springboot.boot.error.handler.DefaultGlobalExceptionHandler;
+import com.springboot.boot.error.handler.DefaultWebApplicationExceptionHandler;
 import com.springboot.boot.error.handler.DevWebApplicationExceptionHandler;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
-import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -25,7 +25,7 @@ public class ExceptionHandlerAutoConfiguration {
     @Profile({"test", "formal", "prod"})
     @Bean
     public ResponseEntityExceptionHandler defaultGlobalExceptionHandler() {
-        return new DefaultGlobalExceptionHandler();
+        return new DefaultWebApplicationExceptionHandler();
     }
 
     @Profile({"local","dev"})

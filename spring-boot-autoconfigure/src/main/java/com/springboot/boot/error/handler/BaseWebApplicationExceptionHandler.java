@@ -46,10 +46,10 @@ public abstract class BaseWebApplicationExceptionHandler extends ResponseEntityE
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected ResponseEntity<Object> handleNoSuchRequestHandlingMethod(org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException ex,
-                                                                       HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return asResponseEntityAndLog(status, HttpStatus.NOT_FOUND.name().toLowerCase(), ex);
-    }
+//    protected ResponseEntity<Object> handleNoSuchRequestHandlingMethod(org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException ex,
+//                                                                       HttpHeaders headers, HttpStatus status, WebRequest request) {
+//        return asResponseEntityAndLog(status, HttpStatus.NOT_FOUND.name().toLowerCase(), ex);
+//    }
 
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
                                                                          HttpHeaders headers, HttpStatus status, WebRequest request) {

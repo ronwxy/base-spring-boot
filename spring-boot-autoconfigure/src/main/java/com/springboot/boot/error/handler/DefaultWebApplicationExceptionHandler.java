@@ -5,5 +5,5 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @CrossOrigin
 @RestControllerAdvice
-public class DefaultGlobalExceptionHandler extends BaseWebApplicationExceptionHandler {
+public class DefaultWebApplicationExceptionHandler extends BaseWebApplicationExceptionHandler {
 }
