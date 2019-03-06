@@ -1,4 +1,4 @@
-package com.springboot.common;
+package com.springboot.common.web;
 
 import com.springboot.common.web.filter.HttpResourceFilter;
 import org.springframework.web.context.request.RequestContextHolder;

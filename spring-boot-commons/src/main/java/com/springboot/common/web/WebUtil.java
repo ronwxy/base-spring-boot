@@ -1,6 +1,5 @@
 package com.springboot.common.web;
 
-import com.springboot.common.HttpResourceHolder;
 import com.springboot.common.jackson.JsonUtil;
 import org.apache.commons.io.IOUtils;
 import org.springframework.util.StringUtils;

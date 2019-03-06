@@ -1,6 +1,6 @@
 package com.springboot.common.web.filter;
 
-import com.springboot.common.HttpResourceHolder;
+import com.springboot.common.web.HttpResourceHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
