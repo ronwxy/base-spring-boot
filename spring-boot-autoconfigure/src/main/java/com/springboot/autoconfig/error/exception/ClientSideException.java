@@ -12,4 +12,8 @@ public class ClientSideException extends BizException {
     public <E extends Enum<E> & BaseErrors> ClientSideException(E exceptionCode, Throwable cause) {
         super(HttpStatus.BAD_REQUEST, exceptionCode, cause);
     }
+
+    public <E extends Enum<E> & BaseErrors> ClientSideException(E exceptionCode) {
+        super(HttpStatus.BAD_REQUEST, exceptionCode, null);
+    }
 }

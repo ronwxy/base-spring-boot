@@ -1,7 +1,8 @@
 package com.springboot.autoconfig.tkmapper;
 
+import com.google.gson.JsonObject;
 import com.springboot.autoconfig.tkmapper.typehandlers.ArrayTypeHandler;
-import com.springboot.autoconfig.tkmapper.typehandlers.JsonbTypeHandler;
+import com.springboot.autoconfig.tkmapper.typehandlers.JsonTypeHandler;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeAliasRegistry;
@@ -13,13 +14,13 @@ import java.util.Map;
 /**
  * default customizer implements to register customized typehandler;
  */
-public class DefaultConfigurationCustomizer implements ConfigurationCustomizer {
+public class MySqlConfigurationCustomizer implements ConfigurationCustomizer {
 	@Override
 	public void customize(Configuration configuration) {
 		TypeHandlerRegistry registry = configuration.getTypeHandlerRegistry();
-		registry.register(List.class, JdbcType.OTHER, JsonbTypeHandler.class);
-		registry.register(Map.class, JdbcType.OTHER, JsonbTypeHandler.class);
-		registry.register(JsonbObject.class, JdbcType.OTHER, JsonbTypeHandler.class);
+		registry.register(List.class, JdbcType.OTHER, JsonTypeHandler.class);
+		registry.register(Map.class, JdbcType.OTHER, JsonTypeHandler.class);
+		registry.register(JsonObject.class, JdbcType.OTHER, JsonTypeHandler.class);
 		registry.register(Object[].class, JdbcType.ARRAY, ArrayTypeHandler.class);
 		registry.register(String[].class, JdbcType.ARRAY, ArrayTypeHandler.class);
 		registry.register(Integer[].class, JdbcType.ARRAY, ArrayTypeHandler.class);
@@ -27,7 +28,6 @@ public class DefaultConfigurationCustomizer implements ConfigurationCustomizer {
 		registry.register(Double[].class, JdbcType.ARRAY, ArrayTypeHandler.class);
 		registry.register(Boolean[].class, JdbcType.ARRAY, ArrayTypeHandler.class);
 		TypeAliasRegistry typeAliasRegistry = configuration.getTypeAliasRegistry();
-		typeAliasRegistry.registerAlias("pgArray", ArrayTypeHandler.class);
-		typeAliasRegistry.registerAlias("pgJsonb", JsonbTypeHandler.class);
+		typeAliasRegistry.registerAlias("json", JsonTypeHandler.class);
 	}
 }

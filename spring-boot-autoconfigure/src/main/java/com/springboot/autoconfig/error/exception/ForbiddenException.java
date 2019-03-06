@@ -12,4 +12,8 @@ public class ForbiddenException extends BizException {
     public <E extends Enum<E> & BaseErrors> ForbiddenException(E exceptionCode, Throwable cause) {
         super(HttpStatus.FORBIDDEN, exceptionCode, cause);
     }
+
+    public <E extends Enum<E> & BaseErrors> ForbiddenException(E exceptionCode) {
+        super(HttpStatus.FORBIDDEN, exceptionCode, null);
+    }
 }

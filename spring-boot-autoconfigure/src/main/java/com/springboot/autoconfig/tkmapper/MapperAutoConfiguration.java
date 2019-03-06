@@ -112,9 +112,17 @@ public class MapperAutoConfiguration {
     }
 
     @Bean
-    static ConfigurationCustomizer defaultConfigurationCustomizer() {
-        return new DefaultConfigurationCustomizer();
+    @ConditionalOnClass(name = {"org.postgresql.Driver"})
+    static ConfigurationCustomizer postGreSqlConfigurationCustomizer() {
+        return new PostgreSqlConfigurationCustomizer();
     }
+
+    @Bean
+    @ConditionalOnClass(name = {"com.mysql.jdbc.Driver"})
+    static ConfigurationCustomizer mySqlConfigurationCustomizer() {
+        return new MySqlConfigurationCustomizer();
+    }
+
 
     @PostConstruct
     public void checkConfigFileExists() {

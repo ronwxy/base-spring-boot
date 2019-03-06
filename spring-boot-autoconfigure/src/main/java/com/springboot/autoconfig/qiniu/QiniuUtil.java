@@ -74,7 +74,7 @@ public class QiniuUtil {
 		String newKey;
 		Response res = _qiniuUploudManager.put(file, key, token, null, mimeType, true);
 		if (Strings.isNullOrEmpty(key) && res.isJson()) {
-			Map<String, Object> jsonResult = JsonUtil.getJsonObj(res.bodyString());
+			Map<String, Object> jsonResult = JsonUtil.parseMap(res.bodyString());
 			newKey = MapUtils.getString(jsonResult, "key");
 		} else {
 			newKey = key;

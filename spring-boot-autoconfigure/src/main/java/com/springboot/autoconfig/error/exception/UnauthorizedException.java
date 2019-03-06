@@ -12,4 +12,8 @@ public class UnauthorizedException extends BizException {
     public <E extends Enum<E> & BaseErrors> UnauthorizedException(E exceptionCode, Throwable cause) {
         super(HttpStatus.UNAUTHORIZED, exceptionCode, cause);
     }
+
+    public <E extends Enum<E> & BaseErrors> UnauthorizedException(E exceptionCode) {
+        super(HttpStatus.UNAUTHORIZED, exceptionCode, null);
+    }
 }
