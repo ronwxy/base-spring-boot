@@ -42,7 +42,7 @@
         <curator.version>2.5.0</curator.version>
         <kryo.version>2.24.0</kryo.version>
         <kryo-serializers.version>0.26</kryo-serializers.version>
-        <alibaba-fastjson.version>1.2.18</alibaba-fastjson.version>
+        <alibaba-fastjson.version>1.2.31</alibaba-fastjson.version>
         <jedis.version>2.9.0</jedis.version>
         <!-- feign version -->
         <feign-core.version>9.5.0</feign-core.version>
