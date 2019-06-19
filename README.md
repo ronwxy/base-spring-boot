@@ -75,7 +75,7 @@
 tkmapper配置， 无默认配置
 - 自动扫描entity及mapper包，扫描路径与springboot默认路径一致
 - 扫描`@Mapper`
-- 自动注册`com.springboot.autoconfig.tkmapper.mapper.BaseMapper` 基础接口
+- 自动注册`BaseMapper` 基础接口
 
 - qiniu-spring-boot-starter 
 
@@ -132,7 +132,7 @@ public class DubboConfig{
 
 -  error-spring-boot-starter
     - 没有配置
-    - 提供默认的全局异常处理器`com.springboot.autoconfig.error.exception.ExceptionHandlerAutoConfiguration$DefaultGlobalExceptionHandler`
+    - 提供默认的全局异常处理器`ExceptionHandlerAutoConfiguration$DefaultGlobalExceptionHandler`
     
 - alimns-spring-boot-starter
 ```yaml
