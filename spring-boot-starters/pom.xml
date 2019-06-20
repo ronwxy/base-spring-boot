@@ -25,7 +25,6 @@
         <module>druid-spring-boot-starter</module>
         <module>error-spring-boot-starter</module>
         <module>alimns-spring-boot-starter</module>
-        <module>db-spring-boot-starter</module>
         <module>redisclient-spring-boot-starter</module>
         <module>web-spring-boot-starter</module>
     </modules>

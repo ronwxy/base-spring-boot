@@ -1,1 +1,1 @@
-provides: druid
+provides: druid, tkmapper-spring-boot-starter

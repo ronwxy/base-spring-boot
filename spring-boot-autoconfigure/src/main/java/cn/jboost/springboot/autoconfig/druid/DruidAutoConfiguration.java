@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @author ray4work@126.com
+ * @author ronwxy
  * @date 2017/10/23 18:22
  */
 @Configuration
