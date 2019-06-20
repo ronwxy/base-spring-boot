@@ -106,8 +106,14 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
     }
 
     @Override
-    public List<T> selectByExample(Example example) {
+    public List<T> selectListByExample(Example example) {
         return mapper.selectByExample(example);
+    }
+
+    @Override
+    public List<T> paginateListByExample(Example example, int page, int rows){
+        RowBounds rowBounds = new RowBounds((page - 1) * rows, rows);
+        return mapper.selectByExampleAndRowBounds(example, rowBounds);
     }
 
     @Override
@@ -116,13 +122,19 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
     }
 
     @Override
-    public QueryResult<T> paginateByExample(Example example, int page, int rows) {
+    public List<T> paginateList(T t, int page, int rows){
+        RowBounds rowBounds = new RowBounds((page - 1) * rows, rows);
+        return mapper.selectByRowBounds(t, rowBounds);
+    }
+
+    @Override
+    public QueryResult<T> paginateQueryResultByExample(Example example, int page, int rows) {
         RowBounds rowBounds = new RowBounds((page - 1) * rows, rows);
         return paginateByExampleAndRowBounds(example, rowBounds);
     }
 
     @Override
-    public QueryResult<T> paginateList(T t, int page, int rows) {
+    public QueryResult<T> paginateQueryResult(T t, int page, int rows) {
         int cnt = mapper.selectCount(t);
         List<T> data;
         if (cnt != 0) {

@@ -62,7 +62,14 @@ public interface IBaseService<PK, T> {
     * @param
     * @return
     */
-    List<T> selectByExample(Example example);
+    List<T> selectListByExample(Example example);
+
+    /**
+    * 分页查询
+    * @param
+    * @return
+    */
+    List<T> paginateListByExample(Example example, int page, int rows);
 
     /**
     * 查询列表
@@ -72,18 +79,25 @@ public interface IBaseService<PK, T> {
     List<T> selectList(T t);
 
     /**
+    * 分页查询
+    * @param
+    * @return
+    */
+    List<T> paginateList(T t, int page, int rows);
+
+    /**
     * 根据Example条件分页查询，返回包含总记录条数
     * @param
     * @return
     */
-    QueryResult<T> paginateByExample(Example example, int page, int row);
+    QueryResult<T> paginateQueryResultByExample(Example example, int page, int rows);
 
     /**
     * 分页查询，返回包含总记录条数
     * @param
     * @return
     */
-    QueryResult<T> paginateList(T t, int page, int row);
+    QueryResult<T> paginateQueryResult(T t, int page, int rows);
 
     /**
     * 分页查询
