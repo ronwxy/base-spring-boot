@@ -15,7 +15,7 @@
 
     <properties>
         <spring-boot.version>2.1.5.RELEASE</spring-boot.version>
-        <base-spring-boot.version>${project.version}</base-spring-boot.version>
+        <base-spring-boot.version>1.2-SNAPSHOT</base-spring-boot.version>
         <qiniu-sdk.version>7.0.11</qiniu-sdk.version>
         <springfox-swagger.version>2.7.0</springfox-swagger.version>
         <xspring-aop-logging.version>1.0.0</xspring-aop-logging.version>

@@ -1,4 +1,4 @@
-package cn.jboost.springboot.parent.controller;
+package cn.jboost.springboot.autoconfig.web.controller;
 
 import java.io.Serializable;
 import java.util.Collection;

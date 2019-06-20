@@ -3,31 +3,33 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.5.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>cn.jboost.springboot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>1.2-SNAPSHOT</version>
+        <relativePath>../spring-boot-dependencies</relativePath>
     </parent>
-    <groupId>cn.jboost.springboot</groupId>
     <artifactId>spring-boot-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-parent</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Parent for Spring Boot Application</description>
 
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
+    <packaging>pom</packaging>
+
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>cn.jboost.springboot</groupId>
+            <artifactId>web-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.jboost.springboot</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 

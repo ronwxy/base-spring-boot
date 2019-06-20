@@ -50,11 +50,10 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!-- base dependencies -->
+        <!-- commons is not optional -->
         <dependency>
             <groupId>cn.jboost.springboot</groupId>
             <artifactId>spring-boot-commons</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>cn.jboost</groupId>
