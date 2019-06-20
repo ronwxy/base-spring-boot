@@ -3,19 +3,39 @@ package cn.jboost.springboot.autoconfig.tkmapper.service;//package cn.jboost.spr
 import cn.jboost.springboot.autoconfig.tkmapper.mapper.BaseMapper;
 import cn.jboost.springboot.autoconfig.tkmapper.util.QueryResult;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Collection;
 import java.util.List;
 
-@Service
 public interface IBaseService<PK, T> {
 
+    /**
+    * 获取满足条件的第一条记录
+    * @param t
+    * @return 
+    */
+    T selectOne(T t);
+
+    /**
+    * 根据主键获取
+    * @param
+    * @return
+    */
     T selectByPk(PK pk);
 
+    /**
+    * 根据主键集合获取
+    * @param
+    * @return
+    */
     List<T> selectByPks(Collection<PK> pks);
 
+    /**
+    * 获取满足条件的记录条数
+    * @param
+    * @return
+    */
     int countByExample(Example example);
 
     /**
@@ -25,8 +45,6 @@ public interface IBaseService<PK, T> {
      * @return the first one from the result
      */
     T selectOneByExample(Example example);
-
-    T selectOne(T t);
 
     /**
      * find the unique one from the result,if more than one rows,throw {@link org.springframework.dao.IncorrectResultSizeDataAccessException},
@@ -39,35 +57,79 @@ public interface IBaseService<PK, T> {
      */
     T selectUniqueByExample(Example example);
 
+    /**
+    * 根据Example条件查询
+    * @param
+    * @return
+    */
     List<T> selectByExample(Example example);
 
+    /**
+    * 查询列表
+    * @param
+    * @return
+    */
     List<T> selectList(T t);
 
+    /**
+    * 根据Example条件分页查询，返回包含总记录条数
+    * @param
+    * @return
+    */
     QueryResult<T> paginateByExample(Example example, int page, int row);
 
+    /**
+    * 分页查询，返回包含总记录条数
+    * @param
+    * @return
+    */
     QueryResult<T> paginateList(T t, int page, int row);
 
+    /**
+    * 分页查询
+    * @param
+    * @return
+    */
     List<T> selectByExampleAndRowBounds(Example example, RowBounds rowBounds);
 
     QueryResult<T> paginateByExampleAndRowBounds(Example example,
                                                  RowBounds rowBounds);
 
+    /**
+    * 创建
+    * @param
+    * @return
+    */
     T create(T entity);
 
+    /**
+    * 批量创建
+    * @param
+    * @return
+    */
     int insertList(List<T> list);
 
     T update(T entity);
 
     /**
      * 根据主键更新属性不为null的值
-     *
      * @param entity
      * @return
      */
     T updateSelective(T entity);
 
+    /**
+     * 更新属性不为null的值
+     * @param entity
+     * @return
+     */
     int updateByExample(T entity, Example example);
 
+    /**
+     * 更新属性不为null的值
+     * @param entity
+     * @return
+     */
     int updateByExampleSelective(T entity, Example example);
 
     void delete(T t);

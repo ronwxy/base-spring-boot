@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/***
+* 目前这个没做什么用，可用来作为自定义查询参考
+*/
 public class PgSqlProvider extends MapperTemplate {
 
 	public PgSqlProvider(Class<?> mapperClass, MapperHelper mapperHelper) {

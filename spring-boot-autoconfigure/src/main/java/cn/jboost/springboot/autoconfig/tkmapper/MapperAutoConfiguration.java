@@ -192,6 +192,7 @@ public class MapperAutoConfiguration {
         }
     }
 
+
     /**
      * This will just scan the same base package as Spring Boot does. If you want
      * more power, you can explicitly use

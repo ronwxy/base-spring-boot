@@ -29,7 +29,6 @@ import java.util.List;
  *
  *     	}
  *     }
- *
  * </pre>
  *
  * @param <PK>
@@ -71,20 +70,24 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         return mapper.selectOne(t);
     }
 
+    @Override
     public T selectByPk(PK pk) {
         return mapper.selectByPrimaryKey(pk);
     }
 
+    @Override
     public List<T> selectByPks(Collection<PK> pks) {
         Example example = new Example(domainType);
         example.createCriteria().andIn(pkField.getName(), pks);
         return mapper.selectByExample(example);
     }
 
+    @Override
     public int countByExample(Example example) {
         return mapper.selectCountByExample(example);
     }
 
+    @Override
     public T selectOneByExample(Example example) {
         List<T> data = mapper.selectByExample(example);
         if (data.isEmpty()) {
@@ -102,6 +105,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         return data.get(0);
     }
 
+    @Override
     public List<T> selectByExample(Example example) {
         return mapper.selectByExample(example);
     }
@@ -111,6 +115,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         return mapper.select(t);
     }
 
+    @Override
     public QueryResult<T> paginateByExample(Example example, int page, int rows) {
         RowBounds rowBounds = new RowBounds((page - 1) * rows, rows);
         return paginateByExampleAndRowBounds(example, rowBounds);
@@ -129,11 +134,13 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         return new QueryResult<>(cnt, data);
     }
 
+    @Override
     public List<T> selectByExampleAndRowBounds(Example example,
                                                RowBounds rowBounds) {
         return mapper.selectByExampleAndRowBounds(example, rowBounds);
     }
 
+    @Override
     public QueryResult<T> paginateByExampleAndRowBounds(Example example,
                                                         RowBounds rowBounds) {
         int cnt = mapper.selectCountByExample(example);
@@ -162,6 +169,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         return mapper.insertList(list);
     }
 
+    @Override
     public T update(T entity) {
         int rows = mapper.updateByPrimaryKey(entity);
         if (rows == 0) {
@@ -171,6 +179,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         return entity;
     }
 
+    @Override
     public T updateSelective(T entity) {
         int rows = mapper.updateByPrimaryKeySelective(entity);
         if (rows == 0) {
@@ -181,10 +190,12 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         return mapper.selectByPrimaryKey(pk);
     }
 
+    @Override
     public int updateByExample(T entity, Example example) {
         return mapper.updateByExample(entity, example);
     }
 
+    @Override
     public int updateByExampleSelective(T entity, Example example) {
         return mapper.updateByExampleSelective(entity, example);
     }
@@ -198,6 +209,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         }
     }
 
+    @Override
     public void deleteByPk(PK pk) {
         int rows = mapper.deleteByPrimaryKey(pk);
         if (rows == 0) {
@@ -206,12 +218,14 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         }
     }
 
+    @Override
     public int deleteByPks(Collection<PK> pks) {
         Example example = new Example(domainType);
         example.createCriteria().andIn(pkField.getName(), pks);
         return mapper.deleteByExample(example);
     }
 
+    @Override
     public int deleteByExample(Example example) {
         return mapper.deleteByExample(example);
     }
