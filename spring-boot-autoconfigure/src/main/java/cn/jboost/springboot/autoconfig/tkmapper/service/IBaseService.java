@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-public interface IService<PK, T> {
+public interface IBaseService<PK, T> {
 
     T selectByPk(PK pk);
 

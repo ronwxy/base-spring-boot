@@ -35,7 +35,7 @@ import java.util.List;
  * @param <PK>
  * @param <T>
  */
-public abstract class BaseService<PK, T> implements IService<PK, T> {
+public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     protected final Class<T> domainType;

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * MyBatis 扫描通过VFS来实现，在Spring Boot中，由于是嵌套Jar，导致Mybatis默认的VFS实现DefaultVFS无法扫描嵌套Jar中的类。
+ * 自定义VFS实现扫描路径覆盖
  * @author Hans Westerbeek
  * @author Eddú Meléndez
  * @author Kazuki Shimizu
@@ -53,7 +55,7 @@ public class SpringBootVFS extends VFS {
     @Override
     protected List<String> list(URL url, String path) throws IOException {
         Resource[] resources = resourceResolver.getResources("classpath*:" + path + "/**/*.class");
-        List<String> resourcePaths = new ArrayList<String>();
+        List<String> resourcePaths = new ArrayList<>();
         for (Resource resource : resources) {
             resourcePaths.add(preserveSubpackageName(resource.getURI(), path));
         }
