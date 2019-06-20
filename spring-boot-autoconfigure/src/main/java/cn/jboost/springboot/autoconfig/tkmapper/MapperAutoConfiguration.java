@@ -16,7 +16,7 @@
 package cn.jboost.springboot.autoconfig.tkmapper;
 
 import cn.jboost.springboot.autoconfig.tkmapper.mapper.BaseMapper;
-import cn.jboost.springboot.autoconfig.tkmapper.spring.mapper.ClassPathMapperScanner;
+import cn.jboost.springboot.autoconfig.tkmapper.spring.ClassPathMapperScanner;
 import cn.jboost.springboot.autoconfig.tkmapper.typehandlers.ConfigurationCustomizer;
 import cn.jboost.springboot.autoconfig.tkmapper.typehandlers.MySqlConfigurationCustomizer;
 import cn.jboost.springboot.autoconfig.tkmapper.typehandlers.PostgreSqlConfigurationCustomizer;

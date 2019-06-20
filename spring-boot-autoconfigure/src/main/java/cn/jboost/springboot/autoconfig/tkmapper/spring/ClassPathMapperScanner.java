@@ -1,4 +1,4 @@
-package cn.jboost.springboot.autoconfig.tkmapper.spring.mapper;
+package cn.jboost.springboot.autoconfig.tkmapper.spring;
 
 import cn.jboost.springboot.autoconfig.tkmapper.mapper.BaseMapper;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -49,16 +49,15 @@ public class ClassPathMapperScanner extends org.mybatis.spring.mapper.ClassPathM
      */
     public void setMapperProperties(Environment environment) {
         Config config = SpringBootBindUtil.bind(environment, Config.class, Config.PREFIX);
-        if (config != null) {
-            //如果没有配置mappers，则默认注册BaseMapper
-            if (config.getMappers() == null || config.getMappers().isEmpty()) {
-                config.setMappers(Arrays.asList(BaseMapper.class));
-            }
-        } else {
+        if (config == null) {
             config = new Config();
             //默认处理非简单类型，即List/Map等这种复杂类型属性都会与数据库映射
             config.setUseSimpleType(false);
             config.setEnumAsSimpleType(true);
+        }
+        //如果没有配置mappers，则默认注册BaseMapper
+        if (config.getMappers() == null || config.getMappers().isEmpty()) {
+            config.setMappers(Arrays.asList(BaseMapper.class));
         }
         mapperHelper.setConfig(config);
     }

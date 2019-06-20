@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package cn.jboost.springboot.autoconfig.tkmapper.spring.mapper;
+package cn.jboost.springboot.autoconfig.tkmapper.spring;
 
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValues;
