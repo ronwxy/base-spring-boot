@@ -29,8 +29,6 @@ public class ClassPathMapperScanner extends org.mybatis.spring.mapper.ClassPathM
     }
 
     protected void doAfterScan(Set<BeanDefinitionHolder> beanDefinitions) {
-        //如果没有注册过接口，就注册默认的Mapper接口
-        this.mapperHelper.ifEmptyRegisterDefaultInterface();
         GenericBeanDefinition definition;
         for (BeanDefinitionHolder holder : beanDefinitions) {
             definition = (GenericBeanDefinition) holder.getBeanDefinition();
@@ -51,10 +49,12 @@ public class ClassPathMapperScanner extends org.mybatis.spring.mapper.ClassPathM
         Config config = SpringBootBindUtil.bind(environment, Config.class, Config.PREFIX);
         if (config == null) {
             config = new Config();
-            //默认处理非简单类型，即List/Map等这种复杂类型属性都会与数据库映射
-            config.setUseSimpleType(false);
-            config.setEnumAsSimpleType(true);
         }
+
+        //默认处理非简单类型，即List/Map等这种复杂类型属性都会与数据库映射，如果不需要映射，加@javax.persistence.Transient注解
+        config.setUseSimpleType(false);
+        config.setEnumAsSimpleType(true);
+
         //如果没有配置mappers，则默认注册BaseMapper
         if (config.getMappers() == null || config.getMappers().isEmpty()) {
             config.setMappers(Arrays.asList(BaseMapper.class));

@@ -17,6 +17,7 @@ package cn.jboost.springboot.autoconfig.tkmapper;
 
 import cn.jboost.springboot.autoconfig.tkmapper.mapper.BaseMapper;
 import cn.jboost.springboot.autoconfig.tkmapper.spring.ClassPathMapperScanner;
+import cn.jboost.springboot.autoconfig.tkmapper.spring.SpringBootBindUtil;
 import cn.jboost.springboot.autoconfig.tkmapper.typehandlers.ConfigurationCustomizer;
 import cn.jboost.springboot.autoconfig.tkmapper.typehandlers.MySqlConfigurationCustomizer;
 import cn.jboost.springboot.autoconfig.tkmapper.typehandlers.PostgreSqlConfigurationCustomizer;
@@ -44,6 +45,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.EnvironmentAware;
@@ -61,6 +63,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import tk.mybatis.spring.annotation.BaseProperties;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -87,7 +90,7 @@ import java.util.Set;
 @ConditionalOnBean(DataSource.class)
 @EnableConfigurationProperties({MybatisProperties.class})
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
-@AutoConfigureBefore(name = "org.mybatis.spring.autoconfig.autoconfigure.MybatisAutoConfiguration")
+@AutoConfigureBefore(name = "org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration")
 public class MapperAutoConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(MapperAutoConfiguration.class);
@@ -228,8 +231,14 @@ public class MapperAutoConfiguration {
                     }
                 }
 
-                scanner.setAnnotationClass(Mapper.class);
-                scanner.addIncludeFilter(new AnnotationTypeFilter(Repository.class));
+                BaseProperties properties = SpringBootBindUtil.bind(environment, BaseProperties.class, BaseProperties.MYBATIS_PREFIX);
+                if(properties != null && properties.getBasePackages() != null && properties.getBasePackages().length > 0){
+                    packages.addAll(Arrays.asList(properties.getBasePackages()));
+                } else {
+                    //设置了包名的情况下，不需要指定该注解
+                    scanner.setAnnotationClass(Mapper.class);
+                    scanner.addIncludeFilter(new AnnotationTypeFilter(Repository.class));
+                }
                 scanner.registerFilters();
                 scanner.setMarkerInterface(BaseMapper.class);
                 Set<BeanDefinitionHolder> holders = scanner.doScan(StringUtils.toStringArray(packages));
@@ -273,6 +282,20 @@ public class MapperAutoConfiguration {
         public void afterPropertiesSet() {
             logger.debug("No {} found.", MapperFactoryBean.class.getName());
         }
+    }
+
+    /**
+     * Support Devtools Restart.
+     */
+    @org.springframework.context.annotation.Configuration
+    @ConditionalOnProperty(prefix = "spring.devtools.restart", name = "enabled", matchIfMissing = true)
+    static class RestartConfiguration {
+
+        @Bean
+        public MapperCacheDisabler mapperCacheDisabler() {
+            return new MapperCacheDisabler();
+        }
+
     }
 
 }

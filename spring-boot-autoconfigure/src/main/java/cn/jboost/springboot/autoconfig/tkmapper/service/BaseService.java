@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import tk.mybatis.mapper.annotation.KeySql;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -25,7 +27,7 @@ import java.util.List;
  * <pre>
  *     {@code
  *     {@literal @}Table(name="t_user")
- *     	public class User extends FixedIdBaseDomain{
+ *     	public class User extends AutoIncrementKeyBaseDomain{
  *
  *     	}
  *     }
@@ -168,7 +170,8 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
     @Override
     public T create(T entity) {
         Object pk = _getPkValue(entity);
-        if (pk == null) {
+        //主键无值，并且没有添加KeySql, GeneratedValue注解，则由数据库产生主键，插入时忽略id字段。主要针对自动生成自增主键的情况
+        if (pk == null && pkField.getAnnotation(KeySql.class) == null && pkField.getAnnotation(GeneratedValue.class) == null) {
             mapper.insertUseGeneratedKeys(entity);
         } else {
             mapper.insert(entity);

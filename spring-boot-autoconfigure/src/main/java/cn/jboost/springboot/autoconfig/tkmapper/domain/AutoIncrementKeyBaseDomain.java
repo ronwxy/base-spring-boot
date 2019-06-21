@@ -4,11 +4,12 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 /**
+ * 用于自增主键场景
  * use it to define an entity with an ID named {@code id},and with a default equals and hashcode depends on {@code id}
  *
  * @param <ID>
  */
-public abstract class FixedIdBaseDomain<ID> extends BaseDomain<ID> {
+public abstract class AutoIncrementKeyBaseDomain<ID> extends BaseDomain<ID> {
 	@Id
 	protected ID id;
 
@@ -24,7 +25,7 @@ public abstract class FixedIdBaseDomain<ID> extends BaseDomain<ID> {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		FixedIdBaseDomain<?> that = (FixedIdBaseDomain<?>) o;
+		AutoIncrementKeyBaseDomain<?> that = (AutoIncrementKeyBaseDomain<?>) o;
 		return Objects.equals(id, that.id);
 	}
 
