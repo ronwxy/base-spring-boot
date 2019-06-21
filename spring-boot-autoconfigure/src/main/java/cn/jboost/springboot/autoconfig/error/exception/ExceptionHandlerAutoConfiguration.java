@@ -28,7 +28,7 @@ public class ExceptionHandlerAutoConfiguration {
         return new DefaultWebApplicationExceptionHandler();
     }
 
-    @Profile({"local","dev"})
+    @Profile({"default","local","dev"})
     @Bean
     public ResponseEntityExceptionHandler devGlobalExceptionHandler() {
         return new DevWebApplicationExceptionHandler();

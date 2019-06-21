@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -126,11 +125,12 @@ public abstract class BaseWebApplicationExceptionHandler extends ResponseEntityE
         return this.asResponseEntity(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.name().toLowerCase(), ex.getMessage(), ex);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> handleAccessDeniedException(Exception ex) {
-        logger.warn("catch access denied exception.", ex);
-        return this.asResponseEntity(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.name().toLowerCase(), ex.getMessage(), ex);
-    }
+    //对于未用到spring security的项目不需要处理
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public ResponseEntity<Object> handleAccessDeniedException(Exception ex) {
+//        logger.warn("catch access denied exception.", ex);
+//        return this.asResponseEntity(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.name().toLowerCase(), ex.getMessage(), ex);
+//    }
 
 
     protected ResponseEntity<Object> asResponseEntity(HttpStatus status, String errorCode, String errorMessage, Exception ex) {
