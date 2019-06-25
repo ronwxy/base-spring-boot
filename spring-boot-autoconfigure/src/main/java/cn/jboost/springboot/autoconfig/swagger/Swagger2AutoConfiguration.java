@@ -45,7 +45,7 @@ import java.util.Map;
 @ConditionalOnClass({org.springframework.web.servlet.DispatcherServlet.class, EnableSwagger2.class})
 @ConditionalOnMissingBean(Docket.class)
 @Configuration
-@Profile({"!formal"})
+@Profile({"dev"})
 @EnableSwagger2
 @ConfigurationProperties(prefix = "swagger")
 public class Swagger2AutoConfiguration {

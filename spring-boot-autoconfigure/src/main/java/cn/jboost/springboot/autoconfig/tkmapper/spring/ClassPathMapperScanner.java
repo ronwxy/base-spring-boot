@@ -42,7 +42,7 @@ public class ClassPathMapperScanner extends org.mybatis.spring.mapper.ClassPathM
 
     /**
      * 从环境变量中获取 mapper 配置信息
-     *
+     * 如果没有配置，则作默认处理
      * @param environment
      */
     public void setMapperProperties(Environment environment) {
@@ -50,7 +50,6 @@ public class ClassPathMapperScanner extends org.mybatis.spring.mapper.ClassPathM
         if (config == null) {
             config = new Config();
         }
-
         //默认处理非简单类型，即List/Map等这种复杂类型属性都会与数据库映射，如果不需要映射，加@javax.persistence.Transient注解
         config.setUseSimpleType(false);
         config.setEnumAsSimpleType(true);
