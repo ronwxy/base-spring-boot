@@ -28,6 +28,11 @@ public class AopLoggerAutoConfiguration {
 		return aopLogger;
 	}
 
+	/**
+	* 注册一个过滤器，用来生成一个reqId，标记一次请求，从而将本次请求所产生的日志串联起来
+	* @param
+	* @return
+	*/
 	@Bean
 	public FilterRegistrationBean reqIdFilter() {
 		ReqIdFilter reqIdFilter = new ReqIdFilter();
