@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 public class BizException extends RuntimeException {
     public static final String ERROR_MESSAGE = ExceptionConstants.ERROR_MESSAGE_KEY;
     public static final String ERROR_CODE = ExceptionConstants.ERROR_CODE_KEY;
+    public static final String ERROR_TRACE = ExceptionConstants.ERROR_TRACE_KEY;
     private int httpStatus;
     private String errorCode;
     private String errorMessage;
@@ -77,30 +78,5 @@ public class BizException extends RuntimeException {
 
     public String getErrorMessage() {
         return errorMessage;
-    }
-
-    public String toString() {
-        return "[error_code: " + this.errorCode + ", error_message: " + this.errorMessage + "]";
-    }
-
-    enum Type implements BaseErrors {
-        apple("apple", "apple");
-        private String code;
-        private String msg;
-
-        private Type(String code, String msg) {
-            this.code = code;
-            this.msg = msg;
-        }
-
-        @Override
-        public String getCode() {
-            return this.code;
-        }
-
-        @Override
-        public String getMsg() {
-            return this.msg;
-        }
     }
 }

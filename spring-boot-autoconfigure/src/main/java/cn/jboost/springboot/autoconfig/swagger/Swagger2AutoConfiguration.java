@@ -20,9 +20,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -57,28 +54,29 @@ public class Swagger2AutoConfiguration {
     private String apiTitle;
     @Value("${swagger.api-description:${spring.application.name}}")
     private String apiDescription;
-    @Value("${swagger.swagger-registry-path:http://10.0.13.128:17623/swagger/register}")
-    private String swaggerRegistryPath;
+    @Value("${swagger.swagger-register-url:http://localhost:11090/swagger/register}")
+    private String swaggerRegisterUrl;
 
-    public String getSwaggerRegistryPath() {
-        return swaggerRegistryPath;
+    public String getSwaggerRegisterUrl() {
+        return swaggerRegisterUrl;
     }
 
-    public void setSwaggerRegistryPath(String swaggerRegistryPath) {
-        this.swaggerRegistryPath = swaggerRegistryPath;
+    public void setSwaggerRegisterUrl(String swaggerRegisterUrl) {
+        this.swaggerRegisterUrl = swaggerRegisterUrl;
     }
 
     @Bean
-    public Docket accessToken() {
+    public Docket restApi() {
         ParameterBuilder builder = new ParameterBuilder();
         builder.name("x-auth-token").description("授权token")
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
-                .required(false).build();
-        return new Docket(DocumentationType.SWAGGER_2).groupName(groupName)
+                .required(false);
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName(groupName)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(apisBasePackage))
-                .paths(PathSelectors.regex("/.*"))
+                .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(Collections.singletonList(builder.build()))
                 .apiInfo(apiInfo());
@@ -135,9 +133,9 @@ public class Swagger2AutoConfiguration {
      * @author liubo
      */
     public class SwaggerInfoRegistar implements CommandLineRunner {
-        private static final String swaggerV2DocsPath = Swagger2Controller.DEFAULT_URL;
-        //private static final String swaggerRegistryPath = "http://localhost:8080/register";
         private final Logger logger = LoggerFactory.getLogger(SwaggerInfoRegistar.class);
+        private static final String swaggerV2DocsPath = Swagger2Controller.DEFAULT_URL;
+
         private ConfigurableApplicationContext context;
 
         SwaggerInfoRegistar(ConfigurableApplicationContext context) {
@@ -159,11 +157,11 @@ public class Swagger2AutoConfiguration {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new FormHttpMessageConverter());
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("module", getApiTitle());
+            body.add("project", getApiTitle());
             body.add("url", url);
-            ResponseEntity<Map> re = restTemplate.postForEntity(getSwaggerRegistryPath(), body, Map.class);
+            ResponseEntity<Map> re = restTemplate.postForEntity(getSwaggerRegisterUrl(), body, Map.class);
             if (HttpStatus.OK.equals(re.getStatusCode())) {
-                logger.info("swagger api registered success");
+                logger.info("swagger api registered success to {}", getSwaggerRegisterUrl());
             } else {
                 logger.warn("swagger api registered failed [{}]", re.getBody().get("msg"));
             }
@@ -187,24 +185,6 @@ public class Swagger2AutoConfiguration {
                     : tmpUrl.toString() + "?group=" + groupName;
             logger.info("local swagger docs url address is [{}]", url);
             return url;
-        }
-    }
-
-    @Configuration
-    @Profile({"dev"})
-    public class SwaggerAllowOriginConfig extends WebMvcConfigurerAdapter {
-        private final Logger logger = LoggerFactory.getLogger(SwaggerAllowOriginConfig.class);
-
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-//			URI uri = URI.create(getSwaggerRegistryPath());
-            //scheme+host+port are all equals the request origin;
-//			String origin = String.format("%s://%s:%s", uri.getScheme(), uri.getHost(), uri.getPort());
-//			logger.info("setting allowOrigins[{}] ", origin);
-            //allowed all origin
-            registry.
-                    addMapping("/**").allowedOrigins(CorsConfiguration.ALL)
-                    .allowedMethods(CorsConfiguration.ALL).allowedHeaders(CorsConfiguration.ALL).allowCredentials(true);
         }
     }
 

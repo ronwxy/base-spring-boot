@@ -4,6 +4,7 @@ import cn.jboost.springboot.autoconfig.error.BaseErrors;
 import org.springframework.http.HttpStatus;
 
 /**
+ * 访问未授权异常，返回401
  * @author ray4work@126.com
  * @date 2018/6/5 16:23
  */

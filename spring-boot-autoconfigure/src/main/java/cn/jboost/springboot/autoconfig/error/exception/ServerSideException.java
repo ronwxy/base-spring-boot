@@ -4,6 +4,7 @@ import cn.jboost.springboot.autoconfig.error.BaseErrors;
 import org.springframework.http.HttpStatus;
 
 /**
+ * 服务端内部异常，返回500
  * @author ray4work@126.com
  * @date 2018/6/5 16:27
  */

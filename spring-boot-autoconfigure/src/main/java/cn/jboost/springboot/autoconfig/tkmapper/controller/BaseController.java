@@ -1,4 +1,4 @@
-package cn.jboost.springboot.autoconfig.web.controller;
+package cn.jboost.springboot.autoconfig.tkmapper.controller;
 
 import cn.jboost.springboot.autoconfig.tkmapper.domain.BaseDomain;
 import cn.jboost.springboot.autoconfig.tkmapper.service.BaseService;

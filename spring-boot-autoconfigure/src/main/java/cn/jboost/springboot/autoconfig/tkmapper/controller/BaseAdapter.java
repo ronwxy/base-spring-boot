@@ -1,4 +1,4 @@
-package cn.jboost.springboot.autoconfig.web.controller;
+package cn.jboost.springboot.autoconfig.tkmapper.controller;
 
 import java.io.Serializable;
 import java.util.Collection;

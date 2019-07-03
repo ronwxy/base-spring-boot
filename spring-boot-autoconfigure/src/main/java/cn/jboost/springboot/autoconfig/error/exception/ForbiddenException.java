@@ -4,6 +4,7 @@ import cn.jboost.springboot.autoconfig.error.BaseErrors;
 import org.springframework.http.HttpStatus;
 
 /**
+ * 禁止访问异常，返回403
  * @author ray4work@126.com
  * @date 2018/6/5 16:26
  */

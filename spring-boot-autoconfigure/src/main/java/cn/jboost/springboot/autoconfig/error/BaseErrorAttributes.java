@@ -15,12 +15,25 @@ import java.io.StringWriter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/***
+* 自定义ErrorAttributes，定制返回格式
+* @Author ronwxy
+* @Date
+*/
 public class BaseErrorAttributes extends DefaultErrorAttributes {
+
+    private boolean includeStackTrace;
+
+    public BaseErrorAttributes(boolean includeStackTrace){
+        super();
+        this.includeStackTrace = includeStackTrace;
+    }
+
     @Override
     public Map<String, Object> getErrorAttributes(WebRequest webRequest, boolean includeStackTrace) {
         Map<String, Object> errorAttributes = new LinkedHashMap<String, Object>();
         addStatus(errorAttributes, webRequest);
-        addErrorDetails(errorAttributes, webRequest, includeStackTrace);
+        addErrorDetails(errorAttributes, webRequest, this.includeStackTrace);
         return errorAttributes;
     }
 
@@ -31,7 +44,6 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
             return;
         }
         if (result.getErrorCount() > 0) {
-//            errorAttributes.put("errors", result.getAllErrors());
             errorAttributes.put(BizException.ERROR_MESSAGE,
                     "Validation failed for object='" + result.getObjectName()
                             + "'. Error count: " + result.getErrorCount());
@@ -55,15 +67,12 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
         Integer status = getAttribute(requestAttributes,
                 "javax.servlet.error.status_code");
         if (status == null) {
-//            errorAttributes.put("status", 999);
-            errorAttributes.put("error", "None");
+            errorAttributes.put(BizException.ERROR_CODE, "None");
             return;
         }
-//        errorAttributes.put("status", status);
         try {
             errorAttributes.put(BizException.ERROR_CODE, HttpStatus.valueOf(status).getReasonPhrase());
         } catch (Exception ex) {
-            // Unable to obtain a reason
             errorAttributes.put(BizException.ERROR_CODE, "Http Status " + status);
         }
     }
@@ -80,7 +89,6 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
             while (error instanceof ServletException && error.getCause() != null) {
                 error = error.getCause();
             }
-//            errorAttributes.put("error", error.getClass().getName());
             addErrorMessage(errorAttributes, error);
             if (includeStackTrace) {
                 addStackTrace(errorAttributes, error);
@@ -98,14 +106,6 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
         StringWriter stackTrace = new StringWriter();
         error.printStackTrace(new PrintWriter(stackTrace));
         stackTrace.flush();
-        errorAttributes.put("trace", stackTrace.toString());
-    }
-
-    private void addPath(Map<String, Object> errorAttributes,
-                         RequestAttributes requestAttributes) {
-        String path = getAttribute(requestAttributes, "javax.servlet.error.request_uri");
-        if (path != null) {
-            errorAttributes.put("path", path);
-        }
+        errorAttributes.put(BizException.ERROR_TRACE, stackTrace.toString());
     }
 }

@@ -24,16 +24,20 @@ public class CORSAutoConfiguration {
     @ConditionalOnMissingBean(name = "corsFilterRegistrationBean")
     public FilterRegistrationBean corsFilterRegistrationBean() {
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
+
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.applyPermitDefaultValues();
         corsConfiguration.setAllowedMethods(Arrays.asList(CorsConfiguration.ALL));
         corsConfiguration.addExposedHeader(HttpHeaders.DATE);
+
         corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+
         CorsFilter corsFilter = new CorsFilter(corsConfigurationSource);
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setFilter(corsFilter);
         filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         filterRegistrationBean.addUrlPatterns("/*");
+
         return filterRegistrationBean;
     }
 }
