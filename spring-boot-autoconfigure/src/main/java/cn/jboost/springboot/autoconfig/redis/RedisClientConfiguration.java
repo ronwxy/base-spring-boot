@@ -23,7 +23,6 @@ import redis.clients.jedis.JedisPoolConfig;
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +56,7 @@ public class RedisClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean(value = RedisConnectionFactory.class, search = SearchStrategy.CURRENT)
-        public JedisConnectionFactory redisConnectionFactory()
-                throws UnknownHostException {
+        public JedisConnectionFactory redisConnectionFactory() {
             return applyProperties(createJedisConnectionFactory());
         }
 
@@ -195,8 +193,7 @@ public class RedisClientConfiguration {
         @Bean
         @ConditionalOnMissingBean(name = "redisTemplate", search = SearchStrategy.CURRENT)
         public RedisTemplate<Object, Object> redisTemplate(
-                RedisConnectionFactory redisConnectionFactory)
-                throws UnknownHostException {
+                RedisConnectionFactory redisConnectionFactory) {
             RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
             template.setConnectionFactory(redisConnectionFactory);
             return template;
@@ -205,8 +202,7 @@ public class RedisClientConfiguration {
         @Bean
         @ConditionalOnMissingBean(value = StringRedisTemplate.class, search = SearchStrategy.CURRENT)
         public StringRedisTemplate stringRedisTemplate(
-                RedisConnectionFactory redisConnectionFactory)
-                throws UnknownHostException {
+                RedisConnectionFactory redisConnectionFactory) {
             StringRedisTemplate template = new StringRedisTemplate();
             template.setConnectionFactory(redisConnectionFactory);
             return template;

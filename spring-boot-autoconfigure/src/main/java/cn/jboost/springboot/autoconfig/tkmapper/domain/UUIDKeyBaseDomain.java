@@ -11,17 +11,17 @@ import java.util.Objects;
  * @Author ronwxy
  * @Date 2019/6/21 16:46   
  */
-public abstract class UUIDKeyBaseDomain<ID> extends BaseDomain<ID>  {
+public abstract class UUIDKeyBaseDomain<String> extends BaseDomain<String>  {
 
     @Id
     @KeySql(sql="select replace(uuid(),'-','')", order = ORDER.BEFORE)
-    protected ID id;
+    protected String id;
 
-    public ID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
