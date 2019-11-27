@@ -1,5 +1,8 @@
 package cn.jboost.springboot.autoconfig.swagger;
 
+import com.fasterxml.classmate.TypeResolver;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +16,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.Ordered;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
@@ -24,6 +29,8 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.AlternateTypeRule;
+import springfox.documentation.schema.AlternateTypeRuleConvention;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
@@ -36,7 +43,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 @ConditionalOnWebApplication
 @ConditionalOnClass({org.springframework.web.servlet.DispatcherServlet.class, EnableSwagger2.class})
@@ -48,7 +59,7 @@ import java.util.Map;
 public class Swagger2AutoConfiguration {
     @Value("${swagger.group-name:${spring.application.name}}")
     private String groupName;
-    @Value("${swagger.apis-base-package:com.xxx}")
+    @Value("${swagger.apis-base-package}")
     private String apisBasePackage;
     @Value("${swagger.api-title:${spring.application.name}}")
     private String apiTitle;
@@ -56,6 +67,10 @@ public class Swagger2AutoConfiguration {
     private String apiDescription;
     @Value("${swagger.swagger-register-url:http://localhost:11090/swagger/register}")
     private String swaggerRegisterUrl;
+
+    // token在header中的key值
+    @Value("${security.token-header:x-auth-token}")
+    private String tokenHeader;
 
     public String getSwaggerRegisterUrl() {
         return swaggerRegisterUrl;
@@ -68,10 +83,11 @@ public class Swagger2AutoConfiguration {
     @Bean
     public Docket restApi() {
         ParameterBuilder builder = new ParameterBuilder();
-        builder.name("x-auth-token").description("授权token")
+        builder.name(tokenHeader).description("授权token")
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
                 .required(false);
+
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(groupName)
                 .select()
@@ -119,6 +135,63 @@ public class Swagger2AutoConfiguration {
 
     public void setApiDescription(String apiDescription) {
         this.apiDescription = apiDescription;
+    }
+
+
+    /**
+     *  将Pageable转换展示在swagger中
+     * @param resolver
+     * @return
+     */
+    @Bean
+    public AlternateTypeRuleConvention pageableConvention(final TypeResolver resolver) {
+        return new AlternateTypeRuleConvention() {
+            @Override
+            public int getOrder() {
+                return Ordered.HIGHEST_PRECEDENCE;
+            }
+
+            @Override
+            public List<AlternateTypeRule> rules() {
+                return newArrayList(newRule(resolver.resolve(Pageable.class), resolver.resolve(Page.class)));
+            }
+        };
+    }
+
+    @ApiModel
+    static class Page {
+        @ApiModelProperty("页码 (0..N)")
+        private Integer page;
+
+        @ApiModelProperty("每页显示的条数")
+        private Integer size;
+
+        @ApiModelProperty("排序格式：property[,asc | desc] 默认为升序，支持多种排序条件：如：id,asc")
+        private List<String> sort;
+
+        public Integer getPage() {
+            return page;
+        }
+
+        public void setPage(Integer page) {
+            this.page = page;
+        }
+
+        public Integer getSize() {
+            return size;
+        }
+
+        public void setSize(Integer size) {
+            this.size = size;
+        }
+
+        public List<String> getSort() {
+            return sort;
+        }
+
+        public void setSort(List<String> sort) {
+            this.sort = sort;
+        }
     }
 
     @Profile({"dev"})

@@ -3,7 +3,7 @@ package cn.jboost.springboot.autoconfig.tkmapper.controller;
 import cn.jboost.springboot.autoconfig.tkmapper.domain.BaseDomain;
 import cn.jboost.springboot.autoconfig.tkmapper.service.BaseService;
 import cn.jboost.springboot.autoconfig.tkmapper.util.QueryResult;
-import com.github.nickvl.xspring.core.log.aop.annotation.LogInfo;
+import cn.jboost.springboot.logging.annotation.LogInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

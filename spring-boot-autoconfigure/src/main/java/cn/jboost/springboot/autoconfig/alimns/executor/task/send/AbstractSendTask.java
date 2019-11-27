@@ -1,10 +1,10 @@
 package cn.jboost.springboot.autoconfig.alimns.executor.task.send;
 
-import com.aliyun.mns.client.AsyncCallback;
-import com.aliyun.mns.model.BaseMessage;
 import cn.jboost.springboot.autoconfig.alimns.executor.MessageDto;
 import cn.jboost.springboot.autoconfig.alimns.executor.MnsExecutor;
-import cn.jboost.springboot.autoconfig.alimns.utils.JsonUtil;
+import cn.jboost.springboot.common.jackson.JsonUtil;
+import com.aliyun.mns.client.AsyncCallback;
+import com.aliyun.mns.model.BaseMessage;
 
 import java.util.HashMap;
 import java.util.Map;

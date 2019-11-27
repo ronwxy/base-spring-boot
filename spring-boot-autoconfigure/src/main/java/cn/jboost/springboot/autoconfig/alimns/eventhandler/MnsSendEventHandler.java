@@ -4,7 +4,7 @@ package cn.jboost.springboot.autoconfig.alimns.eventhandler;
 import cn.jboost.springboot.autoconfig.alimns.event.MnsSendEvent;
 import cn.jboost.springboot.autoconfig.alimns.executor.MessageDto;
 import cn.jboost.springboot.autoconfig.alimns.executor.MnsExecutor;
-import cn.jboost.springboot.autoconfig.alimns.utils.ObjectId;
+import cn.jboost.springboot.common.uuid.ObjectId;
 import org.springframework.context.ApplicationListener;
 
 import java.util.Collection;

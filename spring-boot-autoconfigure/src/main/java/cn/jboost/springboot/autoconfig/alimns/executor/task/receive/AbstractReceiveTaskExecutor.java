@@ -1,11 +1,11 @@
 package cn.jboost.springboot.autoconfig.alimns.executor.task.receive;
 
-import cn.jboost.springboot.autoconfig.alimns.listener.ConsumeMessageCallback;
-import com.aliyun.mns.model.BaseMessage;
 import cn.jboost.springboot.autoconfig.alimns.executor.MessageDto;
 import cn.jboost.springboot.autoconfig.alimns.executor.MnsExecutor;
+import cn.jboost.springboot.autoconfig.alimns.listener.ConsumeMessageCallback;
 import cn.jboost.springboot.autoconfig.alimns.listener.MnsListener;
-import cn.jboost.springboot.autoconfig.alimns.utils.JsonUtil;
+import cn.jboost.springboot.common.jackson.JsonUtil;
+import com.aliyun.mns.model.BaseMessage;
 import org.apache.commons.collections4.MapUtils;
 
 import java.util.Map;
@@ -31,7 +31,7 @@ public abstract class AbstractReceiveTaskExecutor<T extends BaseMessage> impleme
 	private MessageDto createReceivedMessage(String messageBody) {
 		MessageDto messageDto;
 		try {
-			Map<String, Object> map = JsonUtil.fromJsonAsMap(messageBody);
+			Map<String, Object> map = JsonUtil.parseMap(messageBody);
 			String id = MapUtils.getString(map, "_id");
 			String messageTxt = MapUtils.getString(map, "content");
 			messageDto = new MessageDto(id, _mnsListener.getMnsRef(), messageTxt);

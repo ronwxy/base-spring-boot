@@ -1,1 +1,1 @@
-provides: xspring-aop-logging
+provides: spring-boot-logging

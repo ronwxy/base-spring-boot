@@ -1,6 +1,7 @@
 package cn.jboost.springboot.autoconfig.error;
 
-import cn.jboost.springboot.autoconfig.error.exception.BizException;
+import cn.jboost.springboot.common.exception.ExceptionConstants;
+import cn.jboost.springboot.common.exception.ExceptionUtil;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
@@ -10,8 +11,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.ServletException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -40,15 +39,15 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
     private void addErrorMessage(Map<String, Object> errorAttributes, Throwable error) {
         BindingResult result = extractBindingResult(error);
         if (result == null) {
-            errorAttributes.put(BizException.ERROR_MESSAGE, error.getMessage());
+            errorAttributes.put(ExceptionConstants.ERROR_MESSAGE_KEY, error.getMessage());
             return;
         }
         if (result.getErrorCount() > 0) {
-            errorAttributes.put(BizException.ERROR_MESSAGE,
+            errorAttributes.put(ExceptionConstants.ERROR_MESSAGE_KEY,
                     "Validation failed for object='" + result.getObjectName()
                             + "'. Error count: " + result.getErrorCount());
         } else {
-            errorAttributes.put(BizException.ERROR_MESSAGE, "No errors");
+            errorAttributes.put(ExceptionConstants.ERROR_MESSAGE_KEY, "No errors");
         }
     }
 
@@ -67,13 +66,13 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
         Integer status = getAttribute(requestAttributes,
                 "javax.servlet.error.status_code");
         if (status == null) {
-            errorAttributes.put(BizException.ERROR_CODE, "None");
+            errorAttributes.put(ExceptionConstants.ERROR_CODE_KEY, "None");
             return;
         }
         try {
-            errorAttributes.put(BizException.ERROR_CODE, HttpStatus.valueOf(status).getReasonPhrase());
+            errorAttributes.put(ExceptionConstants.ERROR_CODE_KEY, HttpStatus.valueOf(status).getReasonPhrase());
         } catch (Exception ex) {
-            errorAttributes.put(BizException.ERROR_CODE, "Http Status " + status);
+            errorAttributes.put(ExceptionConstants.ERROR_CODE_KEY, "Http Status " + status);
         }
     }
 
@@ -91,21 +90,15 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
             }
             addErrorMessage(errorAttributes, error);
             if (includeStackTrace) {
-                addStackTrace(errorAttributes, error);
+                ExceptionUtil.addStackTrace(errorAttributes, error);
             }
         }
         Object message = getAttribute(webRequest, "javax.servlet.error.message");
-        if ((!StringUtils.isEmpty(message) || errorAttributes.get(BizException.ERROR_MESSAGE) == null)
+        if ((!StringUtils.isEmpty(message) || errorAttributes.get(ExceptionConstants.ERROR_MESSAGE_KEY) == null)
                 && !(error instanceof BindingResult)) {
-            errorAttributes.put(BizException.ERROR_MESSAGE,
+            errorAttributes.put(ExceptionConstants.ERROR_MESSAGE_KEY,
                     StringUtils.isEmpty(message) ? "No message available" : message);
         }
     }
 
-    private void addStackTrace(Map<String, Object> errorAttributes, Throwable error) {
-        StringWriter stackTrace = new StringWriter();
-        error.printStackTrace(new PrintWriter(stackTrace));
-        stackTrace.flush();
-        errorAttributes.put(BizException.ERROR_TRACE, stackTrace.toString());
-    }
 }

@@ -3,8 +3,9 @@ package cn.jboost.springboot.autoconfig.tkmapper.controller;
 import cn.jboost.springboot.autoconfig.tkmapper.domain.BaseDomain;
 import cn.jboost.springboot.autoconfig.tkmapper.service.BaseService;
 import cn.jboost.springboot.autoconfig.tkmapper.util.QueryResult;
+import cn.jboost.springboot.common.adapter.BaseAdapter;
 import cn.jboost.springboot.common.web.QueryResultDto;
-import com.github.nickvl.xspring.core.log.aop.annotation.LogInfo;
+import cn.jboost.springboot.logging.annotation.LogInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,22 +42,22 @@ public abstract class BaseAdapterController<ID extends Serializable, T extends B
 
     @PostMapping
     public R save(@RequestBody T t) {
-        return beanAdapter.entityToDto(baseService.create(t));
+        return beanAdapter.toDTO(baseService.create(t));
     }
 
     @PutMapping
     public R update(@RequestBody T t) {
-        return beanAdapter.entityToDto(baseService.updateSelective(t));
+        return beanAdapter.toDTO(baseService.updateSelective(t));
     }
 
     @GetMapping("{id}")
     public R findById(@PathVariable("id") ID id) {
-        return beanAdapter.entityToDto(baseService.selectByPk(id));
+        return beanAdapter.toDTO(baseService.selectByPk(id));
     }
 
     @GetMapping("batch")
     public List<R> findByIds(@RequestParam("ids") List<ID> ids) {
-        return baseService.selectByPks(ids).stream().map(x -> beanAdapter.entityToDto(x)).collect(Collectors.toList());
+        return (List<R>) beanAdapter.toDTO(baseService.selectByPks(ids));
     }
 
     @GetMapping()
@@ -64,7 +65,7 @@ public abstract class BaseAdapterController<ID extends Serializable, T extends B
                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
                                    @RequestParam(value = "rows", defaultValue = "10") Integer rows) {
         List<T> tmp = Optional.ofNullable(baseService.paginateList(t, page, rows)).orElse(Collections.emptyList());
-        List<R> result = tmp.stream().map(x -> beanAdapter.entityToDto(x)).collect(Collectors.toList());
+        List<R> result = tmp.stream().map(x -> beanAdapter.toDTO(x)).collect(Collectors.toList());
         return result;
     }
 
@@ -73,7 +74,7 @@ public abstract class BaseAdapterController<ID extends Serializable, T extends B
                                           @RequestParam(value = "page", defaultValue = "1") Integer page,
                                           @RequestParam(value = "rows", defaultValue = "10") Integer rows) {
         QueryResult<T> tmp = baseService.paginateQueryResult(t, page, rows);
-        QueryResultDto<R> result = new QueryResultDto<>(tmp.totalRecords, tmp.data.stream().map(x -> beanAdapter.entityToDto(x)).collect(Collectors.toList()));
+        QueryResultDto<R> result = new QueryResultDto<>(tmp.totalRecords, tmp.data.stream().map(x -> beanAdapter.toDTO(x)).collect(Collectors.toList()));
         return result;
     }
 
@@ -95,6 +96,6 @@ public abstract class BaseAdapterController<ID extends Serializable, T extends B
 
     @GetMapping("one")
     public R selectOne(@ModelAttribute T t) {
-        return beanAdapter.entityToDto(baseService.selectOne(t));
+        return beanAdapter.toDTO(baseService.selectOne(t));
     }
 }

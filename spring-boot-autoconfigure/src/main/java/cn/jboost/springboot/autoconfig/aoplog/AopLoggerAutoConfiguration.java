@@ -1,8 +1,8 @@
 package cn.jboost.springboot.autoconfig.aoplog;
 
-import com.github.nickvl.xspring.core.log.aop.AOPLogger;
-import com.github.nickvl.xspring.core.log.aop.ReqIdFilter;
-import com.github.nickvl.xspring.core.log.aop.UniversalLogAdapter;
+import cn.jboost.springboot.logging.AOPLogger;
+import cn.jboost.springboot.logging.ReqIdFilter;
+import cn.jboost.springboot.logging.UniversalLogAdapter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -19,7 +19,8 @@ import java.util.Set;
 public class AopLoggerAutoConfiguration {
 
 	private static final boolean SKIP_NULL_FIELDS = true;
-	private static final Set<String> EXCLUDE_SECURE_FIELD_NAMES = Collections.emptySet();
+	//过滤敏感字段信息
+	private static final Set<String> EXCLUDE_SECURE_FIELD_NAMES = Collections.singleton("password");
 
 	@Bean
 	public AOPLogger aopLogger() {

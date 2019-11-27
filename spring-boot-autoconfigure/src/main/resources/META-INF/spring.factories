@@ -7,5 +7,5 @@ cn.jboost.springboot.autoconfig.swagger.Swagger2AutoConfiguration,\
 cn.jboost.springboot.autoconfig.druid.DruidAutoConfiguration,\
 cn.jboost.springboot.autoconfig.error.ExceptionHandlerAutoConfiguration,\
 cn.jboost.springboot.autoconfig.alimns.MnsAutoConfiguration,\
-cn.jboost.springboot.autoconfig.redis.RedisClientAutoConfiguration,\
+cn.jboost.springboot.autoconfig.redis.clients.RedisClientsAutoConfiguration,\
 cn.jboost.springboot.autoconfig.web.CORSAutoConfiguration

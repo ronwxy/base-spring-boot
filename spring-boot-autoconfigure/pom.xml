@@ -51,8 +51,8 @@
             <artifactId>spring-boot-commons</artifactId>
         </dependency>
         <dependency>
-            <groupId>cn.jboost</groupId>
-            <artifactId>xspring-aop-logging</artifactId>
+            <groupId>cn.jboost.springboot</groupId>
+            <artifactId>spring-boot-logging</artifactId>
             <optional>true</optional>
         </dependency>
         <!-- dubbo dependencies-->
@@ -138,6 +138,10 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.jboost.springboot</groupId>
+            <artifactId>spring-boot-logging</artifactId>
         </dependency>
     </dependencies>
 </project>

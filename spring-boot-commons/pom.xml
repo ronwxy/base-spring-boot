@@ -6,7 +6,6 @@
         <groupId>cn.jboost.springboot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>1.2-SNAPSHOT</version>
-        <relativePath>../spring-boot-dependencies</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,6 +17,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

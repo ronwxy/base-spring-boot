@@ -1,7 +1,8 @@
 package cn.jboost.springboot.autoconfig.error.handler;
 
-import cn.jboost.springboot.autoconfig.error.exception.BizException;
-import cn.jboost.springboot.autoconfig.error.exception.ExceptionConstants;
+import cn.jboost.springboot.common.exception.BizException;
+import cn.jboost.springboot.common.exception.ExceptionConstants;
+import cn.jboost.springboot.common.exception.ExceptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -15,8 +16,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -66,20 +65,14 @@ public class BaseWebApplicationExceptionHandler extends ResponseEntityExceptionH
 
     protected ResponseEntity<Object> asResponseEntity(HttpStatus status, String errorCode, String errorMessage, Exception ex) {
         Map<String, Object> data = new LinkedHashMap<>();
-        data.put(BizException.ERROR_CODE, errorCode);
-        data.put(BizException.ERROR_MESSAGE, errorMessage);
+        data.put(ExceptionConstants.ERROR_CODE_KEY, errorCode);
+        data.put(ExceptionConstants.ERROR_MESSAGE_KEY, errorMessage);
         //是否包含异常的stack trace
         if(includeStackTrace){
-            addStackTrace(data, ex);
+            ExceptionUtil.addStackTrace(data, ex);
         }
         return new ResponseEntity<>(data, status);
     }
 
-    private void addStackTrace(Map<String, Object> errorAttributes, Throwable error) {
-        StringWriter stackTrace = new StringWriter();
-        error.printStackTrace(new PrintWriter(stackTrace));
-        stackTrace.flush();
-        errorAttributes.put(BizException.ERROR_TRACE, stackTrace.toString());
-    }
 
 }
