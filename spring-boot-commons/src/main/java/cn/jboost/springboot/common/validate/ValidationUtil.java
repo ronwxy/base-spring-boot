@@ -16,7 +16,7 @@ public class ValidationUtil {
      */
     public static void isNull(Optional optional) {
         if (!optional.isPresent()) {
-            ExceptionUtil.rethrowClientSideException(CommonErrorCodeEnum.NOT_EXIST);
+            ExceptionUtil.rethrowClientSideException(CommonErrorCodeEnum.NOT_EXIST.getMessage());
         }
     }
 

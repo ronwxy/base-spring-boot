@@ -30,7 +30,6 @@
         <curator.version>2.5.0</curator.version>
         <kryo.version>2.24.0</kryo.version>
         <kryo-serializers.version>0.26</kryo-serializers.version>
-        <alibaba-fastjson.version>1.2.31</alibaba-fastjson.version>
         <jedis.version>2.9.0</jedis.version>
         <aliyun.mns.sdk.version>1.1.5</aliyun.mns.sdk.version>
         <lombok.version>1.16.18</lombok.version>
@@ -42,6 +41,13 @@
         <apache-commons-io.version>2.6</apache-commons-io.version>
         <apache-commons-collections4.version>4.1</apache-commons-collections4.version>
         <apache-commons-pool2.version>2.6.0</apache-commons-pool2.version>
+        <mybatis-plus.version>3.2.0</mybatis-plus.version>
+        <aliyun-oss.version>2.8.3</aliyun-oss.version>
+        <weixin-java.version>3.3.0</weixin-java.version>
+        <aliyun-core.version>4.0.6</aliyun-core.version>
+        <aliyun-dysmsapi.version>1.1.0</aliyun-dysmsapi.version>
+        <aip-version>4.10.0</aip-version>
+        <hutool.version>[4.1.12,)</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -66,14 +72,10 @@
             </dependency>
             <dependency>
                 <groupId>cn.jboost.springboot</groupId>
-                <artifactId>dubboprovider-spring-boot-starter</artifactId>
+                <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${base-spring-boot.version}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.jboost.springboot</groupId>
-                <artifactId>dubboconsumer-spring-boot-starter</artifactId>
-                <version>${base-spring-boot.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>cn.jboost.springboot</groupId>
                 <artifactId>alimq-spring-boot-starter</artifactId>
@@ -87,11 +89,6 @@
             <dependency>
                 <groupId>cn.jboost.springboot</groupId>
                 <artifactId>qiniu-spring-boot-starter</artifactId>
-                <version>${base-spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jboost.springboot</groupId>
-                <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${base-spring-boot.version}</version>
             </dependency>
             <dependency>
@@ -121,11 +118,6 @@
             </dependency>
             <dependency>
                 <groupId>cn.jboost.springboot</groupId>
-                <artifactId>db-spring-boot-starter</artifactId>
-                <version>${base-spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jboost.springboot</groupId>
                 <artifactId>redisclient-spring-boot-starter</artifactId>
                 <version>${base-spring-boot.version}</version>
             </dependency>
@@ -148,11 +140,6 @@
                 <version>${springfox-swagger.version}</version>
             </dependency>
             <!-- swagger end -->
-            <dependency>
-                <groupId>cn.jboost</groupId>
-                <artifactId>xspring-aop-logging</artifactId>
-                <version>${xspring-aop-logging.version}</version>
-            </dependency>
             <!-- third -->
             <dependency>
                 <groupId>com.aliyun.openservices</groupId>
@@ -196,11 +183,41 @@
             </dependency>
 
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${alibaba-fastjson.version}</version>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
+            <!-- 阿里oss -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-oss.version}</version>
+            </dependency>
+            <!-- 阿里短信 -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+                <version>${aliyun-dysmsapi.version}</version>
+            </dependency>
+            <!-- 百度OCR -->
+            <dependency>
+                <groupId>com.baidu.aip</groupId>
+                <artifactId>java-sdk</artifactId>
+                <version>${aip-version}</version>
+            </dependency>
+
+            <!--微信工具类-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-mp</artifactId>
+                <version>${weixin-java.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.aliyun.mns</groupId>
                 <artifactId>aliyun-sdk-mns</artifactId>
@@ -216,46 +233,6 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-
-            <!-- dubbo dependencies start -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>dubbo</artifactId>
-                <version>${dubbo.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.apache.curator</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.curator</groupId>
-                <artifactId>curator-framework</artifactId>
-                <version>${curator.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>log4j</groupId>
-                        <artifactId>log4j</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-log4j12</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>com.esotericsoftware.kryo</groupId>
-                <artifactId>kryo</artifactId>
-                <version>${kryo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.javakaffee</groupId>
-                <artifactId>kryo-serializers</artifactId>
-                <version>${kryo-serializers.version}</version>
-            </dependency>
-            <!-- dubbo dependencies end -->
-
             <dependency>
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
@@ -307,6 +284,11 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-jdk8</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

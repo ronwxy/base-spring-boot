@@ -16,6 +16,7 @@
         <module>spring-boot-commons</module>
         <module>spring-boot-parent</module>
         <module>spring-boot-logging</module>
+        <module>spring-boot-generator</module>
     </modules>
 
 
@@ -23,6 +24,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <release-repository>http://120.77.243.243:8081/repository/maven-releases/</release-repository>
+        <snapshot-repository>http://120.77.243.243:8081/repository/maven-snapshots/</snapshot-repository>
     </properties>
 
     <!--<repositories>-->
@@ -40,33 +43,15 @@
         <!--</repository>-->
     <!--</repositories>-->
 
-    <!--<distributionManagement>-->
-        <!--<repository>-->
-            <!--<id>JS-Rep</id>-->
-            <!--<name>js private repository</name>-->
-            <!--<url>${url.js.private}</url>-->
-        <!--</repository>-->
-
-        <!--<snapshotRepository>-->
-            <!--<id>snapshots</id>-->
-            <!--<name>js snapshots repository</name>-->
-            <!--<url>${url.js.snapshot}</url>-->
-            <!--<uniqueVersion>true</uniqueVersion>-->
-        <!--</snapshotRepository>-->
-    <!--</distributionManagement>-->
-
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
-            <url>
-                http://120.77.243.243:8081/repository/maven-releases/
-            </url>
+            <url>${release-repository}</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
-            <url>
-                http://120.77.243.243:8081/repository/maven-snapshots/
-            </url>
+            <url>${snapshot-repository}</url>
+            <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
 

@@ -1,10 +1,10 @@
 package cn.jboost.springboot.autoconfig.error.handler;
 
+import cn.jboost.springboot.autoconfig.error.ErrorResponse;
 import cn.jboost.springboot.common.exception.BizException;
-import cn.jboost.springboot.common.exception.ExceptionConstants;
+import cn.jboost.springboot.common.exception.CommonErrorCodeEnum;
 import cn.jboost.springboot.common.exception.ExceptionUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,41 +16,37 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
-
+ * 统一异常处理类
  */
 @CrossOrigin
 @RestControllerAdvice
+@Slf4j
 public class BaseWebApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
     private boolean includeStackTrace;
 
-    public BaseWebApplicationExceptionHandler(boolean includeStackTrace){
+    public BaseWebApplicationExceptionHandler(boolean includeStackTrace) {
         super();
         this.includeStackTrace = includeStackTrace;
     }
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @ExceptionHandler(BizException.class)
     public ResponseEntity<Object> handleBizException(BizException ex) {
         logger.warn("catch biz exception: " + ex.toString(), ex.getCause());
-        return this.asResponseEntity(HttpStatus.valueOf(ex.getHttpStatus()), ex.getErrorCode(), ex.getErrorMessage(), ex);
+        return this.asResponseEntity(HttpStatus.valueOf(ex.getStatus()), ex.getMessage(), ex);
     }
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
     public ResponseEntity<Object> handleIllegalArgumentException(Exception ex) {
         logger.warn("catch illegal exception.", ex);
-        return this.asResponseEntity(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.name().toLowerCase(), ex.getMessage(), ex);
+        return this.asResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
         logger.error("catch exception.", ex);
-        return this.asResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.name().toLowerCase(), ExceptionConstants.INNER_SERVER_ERROR_MSG, ex);
+        return this.asResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, CommonErrorCodeEnum.INNER_ERROR.getMessage(), ex);
     }
 
     protected ResponseEntity<Object> handleExceptionInternal(
@@ -59,19 +55,17 @@ public class BaseWebApplicationExceptionHandler extends ResponseEntityExceptionH
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
             request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
         }
-        logger.warn("catch uncustom exception.", ex);
-        return this.asResponseEntity(status, status.name().toLowerCase(), ex.getMessage(), ex);
+        logger.warn("catch unchecked exception.", ex);
+        return this.asResponseEntity(status, ex.getMessage(), ex);
     }
 
-    protected ResponseEntity<Object> asResponseEntity(HttpStatus status, String errorCode, String errorMessage, Exception ex) {
-        Map<String, Object> data = new LinkedHashMap<>();
-        data.put(ExceptionConstants.ERROR_CODE_KEY, errorCode);
-        data.put(ExceptionConstants.ERROR_MESSAGE_KEY, errorMessage);
+    protected ResponseEntity<Object> asResponseEntity(HttpStatus status, String message, Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse(status.value(), message);
         //是否包含异常的stack trace
-        if(includeStackTrace){
-            ExceptionUtil.addStackTrace(data, ex);
+        if (includeStackTrace) {
+            errorResponse.setTrace(ExceptionUtil.extractStackTrace(ex));
         }
-        return new ResponseEntity<>(data, status);
+        return new ResponseEntity<>(errorResponse, status);
     }
 
 

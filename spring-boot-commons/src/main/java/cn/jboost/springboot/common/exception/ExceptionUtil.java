@@ -2,7 +2,6 @@ package cn.jboost.springboot.common.exception;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Map;
 
 /**
  * 异常工具类
@@ -12,45 +11,44 @@ import java.util.Map;
  */
 public class ExceptionUtil {
 
-    public static <E extends Enum<E> & BaseErrors> void rethrowClientSideException(E exceptionCode, Throwable cause) {
-        throw new ClientSideException(exceptionCode, cause);
+    public static void rethrowClientSideException(String message, Throwable cause) {
+        throw new ClientSideException(message, cause);
     }
 
-    public static <E extends Enum<E> & BaseErrors> void rethrowForbiddenException(E exceptionCode, Throwable cause) {
-        throw new ForbiddenException(exceptionCode, cause);
+    public static void rethrowClientSideException(String message) {
+        rethrowClientSideException(message, null);
     }
 
-    public static <E extends Enum<E> & BaseErrors> void rethrowServerSideException(E exceptionCode, Throwable cause) {
-        throw new ServerSideException(exceptionCode, cause);
+    public static void rethrowForbiddenException(String message, Throwable cause) {
+        throw new ForbiddenException(message, cause);
     }
 
-    public static <E extends Enum<E> & BaseErrors> void rethrowUnauthorizedException(E exceptionCode, Throwable cause) {
-        throw new UnauthorizedException(exceptionCode, cause);
+    public static void rethrowForbiddenException(String message) {
+        rethrowForbiddenException(message, null);
     }
 
-    public static <E extends Enum<E> & BaseErrors> void rethrowClientSideException(E exceptionCode) {
-        throw new ClientSideException(exceptionCode, null);
+    public static void rethrowUnauthorizedException(String message, Throwable cause) {
+        throw new UnauthorizedException(message, cause);
     }
 
-    public static <E extends Enum<E> & BaseErrors> void rethrowForbiddenException(E exceptionCode) {
-        throw new ForbiddenException(exceptionCode, null);
+    public static void rethrowUnauthorizedException(String message) {
+        rethrowUnauthorizedException(message, null);
     }
 
-    public static <E extends Enum<E> & BaseErrors> void rethrowServerSideException(E exceptionCode) {
-        throw new ServerSideException(exceptionCode, null);
+    public static void rethrowServerSideException(String message, Throwable cause) {
+        throw new ServerSideException(message, cause);
+    }
+    public static void rethrowServerSideException(String message) {
+        rethrowServerSideException(message, null);
     }
 
-    public static <E extends Enum<E> & BaseErrors> void rethrowUnauthorizedException(E exceptionCode) {
-        throw new UnauthorizedException(exceptionCode, null);
-    }
-
-    public static void addStackTrace(Map<String, Object> errorAttributes, Throwable error) {
+    public static String extractStackTrace(Throwable error) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         try {
             error.printStackTrace(pw);
             sw.flush();
-            errorAttributes.put(ExceptionConstants.ERROR_TRACE_KEY, sw.toString());
+            return sw.toString();
         }finally {
             pw.close();
         }

@@ -9,11 +9,7 @@ import org.springframework.http.HttpStatus;
  */
 public class ServerSideException extends BizException {
 
-    public <E extends Enum<E> & BaseErrors> ServerSideException(E exceptionCode, Throwable cause) {
-        super(HttpStatus.INTERNAL_SERVER_ERROR, exceptionCode, cause);
-    }
-
-    public <E extends Enum<E> & BaseErrors> ServerSideException(E exceptionCode) {
-        super(HttpStatus.INTERNAL_SERVER_ERROR, exceptionCode, null);
+    public ServerSideException(String message, Throwable cause) {
+        super(HttpStatus.INTERNAL_SERVER_ERROR, message, cause);
     }
 }

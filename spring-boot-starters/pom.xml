@@ -20,13 +20,15 @@
         <module>aoplog-spring-boot-starter</module>
         <module>swagger-spring-boot-starter</module>
         <module>alimq-spring-boot-starter</module>
-        <module>dubboconsumer-spring-boot-starter</module>
-        <module>dubboprovider-spring-boot-starter</module>
         <module>druid-spring-boot-starter</module>
         <module>error-spring-boot-starter</module>
         <module>alimns-spring-boot-starter</module>
         <module>redisclient-spring-boot-starter</module>
         <module>web-spring-boot-starter</module>
+        <module>alioss-spring-boot-starter</module>
+        <module>alisms-spring-boot-starter</module>
+        <module>baiduocr-spring-boot-starter</module>
+        <module>mybatisplus-spring-boot-starter</module>
     </modules>
     <dependencies>
         <dependency>

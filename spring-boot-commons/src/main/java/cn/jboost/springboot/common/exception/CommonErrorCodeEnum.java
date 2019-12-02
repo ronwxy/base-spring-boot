@@ -1,26 +1,20 @@
 package cn.jboost.springboot.common.exception;
 
-public enum CommonErrorCodeEnum implements BaseErrors{
-    NOT_EXIST("not_exist", "请求的资源不存在"),
-    VALIDATE_FAIL("validate_fail", "参数校验失败"),
-    TOKEN_EXPIRED("token_expired", "登录状态已过期")
+public enum CommonErrorCodeEnum {
+    NOT_EXIST("请求的资源不存在"),
+    VALIDATE_FAIL("参数校验失败"),
+    TOKEN_EXPIRED("登录状态已过期"),
+    INNER_ERROR("抱歉，服务出错啦，请稍后重试"),
+    TIMEOUT_ERROR("请求服务超时，请稍后重试"),
     ;
 
+    private String message;
 
-    private String code;
-    private String msg;
-
-    private CommonErrorCodeEnum(String code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
-    @Override
-    public String getCode() {
-        return code;
+    private CommonErrorCodeEnum(String message) {
+        this.message = message;
     }
 
-    @Override
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 }

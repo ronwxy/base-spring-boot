@@ -9,11 +9,7 @@ import org.springframework.http.HttpStatus;
  */
 public class UnauthorizedException extends BizException {
 
-    public <E extends Enum<E> & BaseErrors> UnauthorizedException(E exceptionCode, Throwable cause) {
-        super(HttpStatus.UNAUTHORIZED, exceptionCode, cause);
-    }
-
-    public <E extends Enum<E> & BaseErrors> UnauthorizedException(E exceptionCode) {
-        super(HttpStatus.UNAUTHORIZED, exceptionCode, null);
+    public UnauthorizedException(String message, Throwable cause) {
+        super(HttpStatus.UNAUTHORIZED, message, cause);
     }
 }
