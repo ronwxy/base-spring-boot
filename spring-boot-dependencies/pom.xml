@@ -108,6 +108,11 @@
             </dependency>
             <dependency>
                 <groupId>cn.jboost.springboot</groupId>
+                <artifactId>mybatisplus-spring-boot-starter</artifactId>
+                <version>${base-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jboost.springboot</groupId>
                 <artifactId>error-spring-boot-starter</artifactId>
                 <version>${base-spring-boot.version}</version>
             </dependency>
@@ -118,7 +123,27 @@
             </dependency>
             <dependency>
                 <groupId>cn.jboost.springboot</groupId>
+                <artifactId>alioss-spring-boot-starter</artifactId>
+                <version>${base-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jboost.springboot</groupId>
+                <artifactId>alisms-spring-boot-starter</artifactId>
+                <version>${base-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jboost.springboot</groupId>
+                <artifactId>redis-spring-boot-starter</artifactId>
+                <version>${base-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jboost.springboot</groupId>
                 <artifactId>redisclient-spring-boot-starter</artifactId>
+                <version>${base-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jboost.springboot</groupId>
+                <artifactId>baiduocr-spring-boot-starter</artifactId>
                 <version>${base-spring-boot.version}</version>
             </dependency>
             <dependency>

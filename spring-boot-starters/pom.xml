@@ -29,6 +29,7 @@
         <module>alisms-spring-boot-starter</module>
         <module>baiduocr-spring-boot-starter</module>
         <module>mybatisplus-spring-boot-starter</module>
+        <module>redis-spring-boot-starter</module>
     </modules>
     <dependencies>
         <dependency>

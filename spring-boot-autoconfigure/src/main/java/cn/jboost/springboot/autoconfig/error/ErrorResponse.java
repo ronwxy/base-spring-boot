@@ -1,22 +1,21 @@
 package cn.jboost.springboot.autoconfig.error;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Data
 public class ErrorResponse {
 
     private int status = HttpStatus.BAD_REQUEST.value();
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime timestamp;
+    private Long timestamp;
     private String message;
     private String trace;
 
     private ErrorResponse() {
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"));
     }
 
     public ErrorResponse(int status, String message) {

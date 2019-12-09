@@ -11,7 +11,7 @@ import java.util.Collection;
  * @param <T> bean type  Serializable
  * @param <D> bean type Serializable
  */
-public interface BaseAdapter<T extends Serializable, D extends Serializable> {
+public interface BaseAdapter<T, D extends Serializable> {
     String MAPSTRUCT_COMPONENT_MODEL_SPRING = "spring";
 
     /**

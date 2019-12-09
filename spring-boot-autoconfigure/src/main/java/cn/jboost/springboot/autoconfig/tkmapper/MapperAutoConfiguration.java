@@ -86,7 +86,7 @@ import java.util.Set;
  * @author Eduardo Macarrón
  */
 @org.springframework.context.annotation.Configuration
-@ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
+@ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class, BaseProperties.class})
 @ConditionalOnBean(DataSource.class)
 @EnableConfigurationProperties({MybatisProperties.class})
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
