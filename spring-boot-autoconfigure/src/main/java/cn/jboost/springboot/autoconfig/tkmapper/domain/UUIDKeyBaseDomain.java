@@ -11,7 +11,7 @@ import java.util.Objects;
  * @Author ronwxy
  * @Date 2019/6/21 16:46   
  */
-public abstract class UUIDKeyBaseDomain extends BaseDomain<String>  {
+public abstract class UUIDKeyBaseDomain extends BaseDomain  {
 
     @Id
     @KeySql(sql="select replace(uuid(),'-','')", order = ORDER.BEFORE)

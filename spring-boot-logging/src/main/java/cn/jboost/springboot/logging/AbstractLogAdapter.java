@@ -14,6 +14,10 @@ import org.slf4j.LoggerFactory;
  */
 abstract class AbstractLogAdapter implements LogAdapter {
 
+    private static final String CALLING = "calling: ";
+    private static final String RETURNING = "returning: ";
+    private static final String THROWING = "throwing: ";
+
     @Override
     public Logger getLog(Class clazz) {
         return LoggerFactory.getLogger(clazz);
@@ -26,7 +30,6 @@ abstract class AbstractLogAdapter implements LogAdapter {
 
     @Override
     public String toMessage(String method, Object[] args, ArgumentDescriptor argumentDescriptor) {
-        String CALLING = calling();
         if (args.length == 0) {
             return CALLING + method + "()";
         }
@@ -60,7 +63,6 @@ abstract class AbstractLogAdapter implements LogAdapter {
 
     @Override
     public String toMessage(String method, int argCount, Object result) {
-        String RETURNING = returning();
         if (argCount == 0) {
             return RETURNING + method + "():" + asString(result);
         }
@@ -69,7 +71,6 @@ abstract class AbstractLogAdapter implements LogAdapter {
 
     @Override
     public String toMessage(String method, int argCount, Exception e, boolean stackTrace) {
-        String THROWING = throwing();
         String message;
         if (argCount == 0) {
             message = THROWING + method + "():" + e.getClass();
@@ -83,17 +84,5 @@ abstract class AbstractLogAdapter implements LogAdapter {
     }
 
     protected abstract String asString(Object value);
-
-    private String calling() {
-        return "calling: ";
-    }
-
-    private String returning() {
-        return "returning: ";
-    }
-
-    private String throwing() {
-        return "throwing: ";
-    }
 
 }

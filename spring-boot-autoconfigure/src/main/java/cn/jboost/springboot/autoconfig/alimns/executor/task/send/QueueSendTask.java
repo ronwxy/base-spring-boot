@@ -8,7 +8,7 @@ import cn.jboost.springboot.autoconfig.alimns.executor.MnsClientFactory;
 import cn.jboost.springboot.autoconfig.alimns.executor.MnsExecutor;
 import org.apache.commons.collections4.MapUtils;
 
-public class QueueSendTask extends AbstractSendTask<Message> {
+public class QueueSendTask extends AbstractSendTask {
 
 	private final String _queueName;
 
@@ -29,12 +29,12 @@ public class QueueSendTask extends AbstractSendTask<Message> {
 		Message message = new Message();
 		message.setMessageBody(createMnsTxt(), Message.MessageBodyType.RAW_STRING);
 
-		Integer delaySeconds = MapUtils.getInteger(_messageDto.getMessageAttributes(), "delaySeconds");
+		Integer delaySeconds = MapUtils.getInteger(messageDto.getMessageAttributes(), "delaySeconds");
 		if (delaySeconds != null) {
 			message.setDelaySeconds(delaySeconds);
 		}
 
-		Integer priority = MapUtils.getInteger(_messageDto.getMessageAttributes(), "priority");
+		Integer priority = MapUtils.getInteger(messageDto.getMessageAttributes(), "priority");
 		if (priority != null) {
 			message.setPriority(priority);
 		}

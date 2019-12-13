@@ -1,6 +1,7 @@
 package cn.jboost.springboot.autoconfig.tkmapper.domain;//package cn.jboost.springboot.parent.domain;
 
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Objects;
  *
  * @param <ID>
  */
-public abstract class AutoIncrementKeyBaseDomain<ID> extends BaseDomain<ID> {
+public abstract class AutoIncrementKeyBaseDomain<ID extends Serializable> extends BaseDomain {
 	@Id
 	protected ID id;
 

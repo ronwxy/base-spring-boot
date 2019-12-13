@@ -1,0 +1,6 @@
+projectKey=base-springboot
+serverUrl=http://192.168.40.202:9000
+serverVersion=6.7.7.38951
+dashboardUrl=http://192.168.40.202:9000/dashboard/index/base-springboot
+ceTaskId=AW7p1d55bxGmAT4FCHdK
+ceTaskUrl=http://192.168.40.202:9000/api/ce/task?id=AW7p1d55bxGmAT4FCHdK

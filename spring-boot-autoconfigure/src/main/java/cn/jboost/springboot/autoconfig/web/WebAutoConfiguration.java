@@ -1,5 +1,6 @@
 package cn.jboost.springboot.autoconfig.web;
 
+import cn.jboost.springboot.autoconfig.web.filter.ExceptionHandlerFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -76,6 +77,19 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         filterRegistrationBean.addUrlPatterns("/*");
 
+        return filterRegistrationBean;
+    }
+
+    /**
+     * 统一Filter中的异常处理
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean exceptionHandlerFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setFilter(new ExceptionHandlerFilter());
+        filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE); //将该filter放在最前面
+        filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }
 

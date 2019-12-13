@@ -19,12 +19,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /***
-* 需要转换成DTO类型bean的base controller
-* @Author ronwxy
-* @Date 2019/6/20 18:11
-*/
+ * 需要转换成DTO类型bean的base controller
+ * @Author ronwxy
+ * @Date 2019/6/20 18:11
+ */
 @LogInfo
-public abstract class BaseAdapterController<ID extends Serializable, T extends BaseDomain<ID>, R extends Serializable> {
+public abstract class BaseAdapterController<ID extends Serializable, T extends BaseDomain, R extends Serializable> {
 
     protected Class<T> domainClass;
     protected Class<R> dtoClass;
@@ -65,33 +65,31 @@ public abstract class BaseAdapterController<ID extends Serializable, T extends B
                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
                                    @RequestParam(value = "rows", defaultValue = "10") Integer rows) {
         List<T> tmp = Optional.ofNullable(baseService.paginateList(t, page, rows)).orElse(Collections.emptyList());
-        List<R> result = tmp.stream().map(x -> beanAdapter.toDTO(x)).collect(Collectors.toList());
-        return result;
+        return tmp.stream().map(x -> beanAdapter.toDTO(x)).collect(Collectors.toList());
     }
 
     @GetMapping("paginate")
     public QueryResultDto<R> paginateByCondition(@ModelAttribute T t,
-                                          @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                          @RequestParam(value = "rows", defaultValue = "10") Integer rows) {
+                                                 @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                 @RequestParam(value = "rows", defaultValue = "10") Integer rows) {
         QueryResult<T> tmp = baseService.paginateQueryResult(t, page, rows);
-        QueryResultDto<R> result = new QueryResultDto<>(tmp.totalRecords, tmp.data.stream().map(x -> beanAdapter.toDTO(x)).collect(Collectors.toList()));
-        return result;
+        return new QueryResultDto<>(tmp.totalRecords, tmp.data.stream().map(x -> beanAdapter.toDTO(x)).collect(Collectors.toList()));
     }
 
 
     @DeleteMapping
     public void delete(@RequestBody T t) {
-            baseService.delete(t);
+        baseService.delete(t);
     }
 
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable("id") ID id) {
-            baseService.deleteByPk(id);
+        baseService.deleteByPk(id);
     }
 
     @DeleteMapping("batch")
     public void deleteByIds(@RequestParam("ids") Collection<ID> ids) {
-            baseService.deleteByPks(ids);
+        baseService.deleteByPks(ids);
     }
 
     @GetMapping("one")

@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -19,7 +18,6 @@ import org.springframework.web.util.WebUtils;
 /**
  * 统一异常处理类
  */
-@CrossOrigin
 @RestControllerAdvice
 @Slf4j
 public class BaseWebApplicationExceptionHandler extends ResponseEntityExceptionHandler {
@@ -63,7 +61,7 @@ public class BaseWebApplicationExceptionHandler extends ResponseEntityExceptionH
         ErrorResponse errorResponse = new ErrorResponse(status.value(), message);
         //是否包含异常的stack trace
         if (includeStackTrace) {
-            errorResponse.setTrace(ExceptionUtil.extractStackTrace(ex));
+            errorResponse.setTrace(ExceptionUtil.extractStackTrace(ex.getCause()));
         }
         return new ResponseEntity<>(errorResponse, status);
     }

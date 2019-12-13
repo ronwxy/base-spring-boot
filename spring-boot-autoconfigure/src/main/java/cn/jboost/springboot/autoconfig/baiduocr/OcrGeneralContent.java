@@ -1,5 +1,6 @@
 package cn.jboost.springboot.autoconfig.baiduocr;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

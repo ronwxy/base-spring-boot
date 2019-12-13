@@ -18,6 +18,9 @@ import java.util.Map;
  */
 public class BaiduOCRUtil {
 
+    private BaiduOCRUtil() {
+    }
+
     /**
      * 获取通用识别内容、报告单名称
      *
@@ -27,22 +30,20 @@ public class BaiduOCRUtil {
     public static Map<String, Object> getGeneralContent(JSONObject jsonObject, Map<String, Object> params) {
         String json = JSONUtil.toJsonStr(jsonObject);
         OcrGeneralContent ocrGeneralContent = JSONUtil.toBean(json, OcrGeneralContent.class);
-        Integer error_code = ocrGeneralContent.getError_code();
-        if (error_code != null && error_code != 0) {
-            ExceptionUtil.rethrowServerSideException("图片识别失败，错误码:" + error_code + ",错误原因:" + ocrGeneralContent.getError_msg());
+        Integer errorCode = ocrGeneralContent.getError_code();
+        if (errorCode != null && errorCode != 0) {
+            ExceptionUtil.rethrowServerSideException("图片识别失败，错误码:" + errorCode + ",错误原因:" + ocrGeneralContent.getError_msg());
         }
         List<OcrGeneralContent.WordsResultBean> wordsResults = ocrGeneralContent.getWords_result();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int count = 0;
         // 文本拼接换行，获取报告单名称
         boolean getReport = false;
         for (OcrGeneralContent.WordsResultBean wordsResult : wordsResults) {
             String words = wordsResult.getWords();
-            if (!getReport) {
-                if (StringUtils.isNotEmpty(words) && (words.endsWith("报告") || words.endsWith("报告单"))) {
-                    params.put("report", words);
-                    getReport = true;
-                }
+            if (!getReport && StringUtils.isNotEmpty(words) && (words.endsWith("报告") || words.endsWith("报告单"))) {
+                params.put("report", words);
+                getReport = true;
             }
             sb.append(words);
             if (count != wordsResults.size() - 1) {
@@ -67,9 +68,9 @@ public class BaiduOCRUtil {
     public static String getCustomerContent(JSONObject jsonObject) {
         String json = JSONUtil.toJsonStr(jsonObject);
         OcrCustomerContent ocrCustomerContent = JSONUtil.toBean(json, OcrCustomerContent.class);
-        Integer error_code = ocrCustomerContent.getError_code();
-        if (error_code != null && error_code != 0) {
-            ExceptionUtil.rethrowServerSideException("图片识别失败，错误码:" + error_code + ",错误原因:" + ocrCustomerContent.getError_msg());
+        Integer errorCode = ocrCustomerContent.getError_code();
+        if (errorCode != null && errorCode != 0) {
+            ExceptionUtil.rethrowServerSideException("图片识别失败，错误码:" + errorCode + ",错误原因:" + ocrCustomerContent.getError_msg());
         }
         List<OcrCustomerContent.DataBean.RetBean> ret = ocrCustomerContent.getData().getRet();
         Map<String, Object> params = new HashMap<>(ret.size());

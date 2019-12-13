@@ -1,17 +1,15 @@
 package cn.jboost.springboot.autoconfig.alimq.producer;
 
+import cn.jboost.springboot.common.jackson.JsonUtil;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.transaction.LocalTransactionChecker;
 import com.aliyun.openservices.ons.api.transaction.TransactionStatus;
-import cn.jboost.springboot.common.jackson.JsonUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+@Slf4j
 public abstract class AbstractLocalTransactionChecker implements LocalTransactionChecker {
-
-    private final static Logger LOG = LoggerFactory.getLogger(AbstractLocalTransactionChecker.class);
 
     /**
      * 本地反查
@@ -26,14 +24,14 @@ public abstract class AbstractLocalTransactionChecker implements LocalTransactio
         try {
             boolean isCommit = this.localTranCheck(msgMap);
             if (isCommit) {
-                LOG.info("local check succeed. msgId: {}, msg body: {}", message.getMsgID(), msgMap);
+                log.info("local check succeed. msgId: {}, msg body: {}", message.getMsgID(), msgMap);
                 return TransactionStatus.CommitTransaction;
             } else {
-                LOG.info("local check fail. msgId: {}, msg body: {}", message.getMsgID(), msgMap);
+                log.info("local check fail. msgId: {}, msg body: {}", message.getMsgID(), msgMap);
                 return TransactionStatus.RollbackTransaction;
             }
         }catch (Exception ex){
-            LOG.error("local check succeed. msgId: {}, msg body: {}", message.getMsgID(), msgMap, ex);
+            log.error("local check succeed. msgId: {}, msg body: {}", message.getMsgID(), msgMap, ex);
             return TransactionStatus.Unknow;
         }
     }

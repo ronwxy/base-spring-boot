@@ -6,9 +6,8 @@ import java.io.Serializable;
 /**
  * super class to define a entity
  *
- * @param <ID> 主键类型
  */
-public abstract class BaseDomain<ID> implements Serializable {
+public abstract class BaseDomain implements Serializable {
 
 	private static final long serialVersionUID = -8075827049184773786L;
 

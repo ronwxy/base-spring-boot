@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 public class MyBatisPlusQueryHelper {
@@ -215,17 +216,31 @@ public class MyBatisPlusQueryHelper {
 
     /**
      * 将自定义分页对象转换为mybatis-plus的分页对象
+     * @param page
+     * @param count
+     * @return
+     */
+    public static Page buildPage(cn.jboost.springboot.common.web.Page page, boolean count) {
+       return buildPage(null, page, count);
+    }
+
+    /**
+     * 将自定义分页对象转换为mybatis-plus的分页对象
      *
      * @param target 目标实体类
      * @param page   自定义分页对象
+     * @Param count 是否执行count查询
      * @param <T>
      * @return
      */
-    public static <T> Page buildPage(Class<T> target, cn.jboost.springboot.autoconfig.web.controller.Page page) {
+    public static <T> Page buildPage(Class<T> target, cn.jboost.springboot.common.web.Page page, boolean count) {
         Page p = new Page();
         p.setCurrent(page.getPage());
         p.setSize(page.getSize());
-        p.setOrders(buildOrderItems(target, page.getSort()));
+        p.setSearchCount(count);
+        if(!Objects.isNull(target)) {
+            p.setOrders(buildOrderItems(target, page.getSort()));
+        }
         return p;
     }
 

@@ -21,7 +21,7 @@ import java.util.Optional;
 * @Date 2019/6/20 18:11
 */
 @LogInfo
-public abstract class BaseController<ID extends Serializable, T extends BaseDomain<ID>> {
+public abstract class BaseController<ID extends Serializable, T extends BaseDomain> {
 
     protected Class<T> domainClass;
 

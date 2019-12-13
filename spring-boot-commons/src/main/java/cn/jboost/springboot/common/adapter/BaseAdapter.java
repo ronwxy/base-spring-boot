@@ -12,7 +12,6 @@ import java.util.Collection;
  * @param <D> bean type Serializable
  */
 public interface BaseAdapter<T, D extends Serializable> {
-    String MAPSTRUCT_COMPONENT_MODEL_SPRING = "spring";
 
     /**
      * entity 转 DTO

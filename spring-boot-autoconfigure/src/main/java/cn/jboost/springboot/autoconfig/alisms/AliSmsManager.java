@@ -54,8 +54,7 @@ public class AliSmsManager {
         // 初始化ascClient,暂时不支持多region
         IClientProfile profile = DefaultProfile.getProfile("cn-changsha", properties.getAccessKeyId(), properties.getAccessKeySecret());
         DefaultProfile.addEndpoint("cn-hangzhou", "cn-changsha", product, domain);
-        IAcsClient acsClient = new DefaultAcsClient(profile);
-        return acsClient;
+        return new DefaultAcsClient(profile);
     }
 
     /**
@@ -64,7 +63,7 @@ public class AliSmsManager {
      * @param phoneNumber
      * @param identify
      */
-    public boolean sendVerifyCode(String templateCode, String phoneNumber, String identify) throws Exception {
+    public boolean sendVerifyCode(String templateCode, String phoneNumber, String identify) throws ClientException {
         return sendSms(phoneNumber, properties.getSignName(), templateCode, MessageFormat.format(VERIFY_CODE_PARAM_TEMPLATE, identify));
     }
 
@@ -74,7 +73,7 @@ public class AliSmsManager {
      * @param phoneNumber
      * @param identify
      */
-    public boolean sendVerifyCode( String phoneNumber, String identify) throws Exception {
+    public boolean sendVerifyCode( String phoneNumber, String identify) throws ClientException {
         return sendSms(phoneNumber, properties.getSignName(), properties.getTemplateCode(), MessageFormat.format(VERIFY_CODE_PARAM_TEMPLATE, identify));
     }
 
@@ -89,7 +88,7 @@ public class AliSmsManager {
      * @return
      * @throws Exception
      */
-    public boolean sendSms(String phoneNumber, String signName, String smsTempCode, String tempParam) throws Exception {
+    public boolean sendSms(String phoneNumber, String signName, String smsTempCode, String tempParam) throws ClientException {
         log.info("send sms, phone:{}, signName:{}, smsTemplateCode:{}, content:{}", phoneNumber, signName, smsTempCode, tempParam);
         IAcsClient acsClient = initClient();
         //组装请求对象

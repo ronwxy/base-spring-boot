@@ -28,16 +28,16 @@ import java.util.concurrent.ConcurrentMap;
  */
 @Aspect
 public class AOPLogger implements InitializingBean {
-    // private static final Log LOGGER = LogFactory.getLog(AOPLogger.class);
+    private static final String ELAPSED_TIME = "elapsedTime";
     private LogAdapter logAdapter;
     private Map<Severity, LogStrategy> logStrategies;
     private final LocalVariableTableParameterNameDiscoverer localVariableNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
     private final ExceptionResolver exceptionResolver = new ExceptionResolver();
-    private final ConcurrentMap<Method, MethodDescriptor> cache = new ConcurrentHashMap<Method, MethodDescriptor>();
+    private final ConcurrentMap<Method, MethodDescriptor> cache = new ConcurrentHashMap<>();
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        logStrategies = new EnumMap<Severity, LogStrategy>(Severity.class);
+        logStrategies = new EnumMap<>(Severity.class);
         logStrategies.put(Severity.ERROR, new LogStrategy.ErrorLogStrategy(logAdapter));
         logStrategies.put(Severity.WARN, new LogStrategy.WarnLogStrategy(logAdapter));
         logStrategies.put(Severity.INFO, new LogStrategy.InfoLogStrategy(logAdapter));
@@ -88,7 +88,7 @@ public class AOPLogger implements InitializingBean {
                 result = joinPoint.proceed(args);
             } catch (Exception e) {
                 long endTime = System.currentTimeMillis();
-                MDC.put("elapsedTime", Long.toString(endTime - startTime));
+                MDC.put(ELAPSED_TIME, Long.toString(endTime - startTime));
                 ExceptionDescriptor exceptionDescriptor = getExceptionDescriptor(descriptor, invocationDescriptor);
                 Class<? extends Exception> resolved = exceptionResolver.resolve(exceptionDescriptor, e);
                 if (resolved != null) {
@@ -101,14 +101,14 @@ public class AOPLogger implements InitializingBean {
             }
         }
         long endTime = System.currentTimeMillis();
-        MDC.put("elapsedTime", Long.toString(endTime - startTime));
+        MDC.put(ELAPSED_TIME, Long.toString(endTime - startTime));
         if (afterLoggingOn(invocationDescriptor, logger)) {
             Object loggedResult = (method.getReturnType() == Void.TYPE) ? Void.TYPE : result;
             logStrategies.get(invocationDescriptor.getAfterSeverity()).logAfter(logger, methodName, args.length, loggedResult);
         }
         MDC.remove("callingClass");
         MDC.remove("callingMethod");
-        MDC.remove("elapsedTime");
+        MDC.remove(ELAPSED_TIME);
 
         return result;
     }

@@ -48,6 +48,7 @@
         <aliyun-dysmsapi.version>1.1.0</aliyun-dysmsapi.version>
         <aip-version>4.10.0</aip-version>
         <hutool.version>[4.1.12,)</hutool.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -314,6 +315,11 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

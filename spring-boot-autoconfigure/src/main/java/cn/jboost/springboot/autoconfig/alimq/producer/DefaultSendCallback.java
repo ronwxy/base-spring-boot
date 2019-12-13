@@ -3,24 +3,23 @@ package cn.jboost.springboot.autoconfig.alimq.producer;
 import com.aliyun.openservices.ons.api.OnExceptionContext;
 import com.aliyun.openservices.ons.api.SendCallback;
 import com.aliyun.openservices.ons.api.SendResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author ray4work@126.com
  * @date 2017/10/30 8:43
  */
+@Slf4j
 public class DefaultSendCallback implements SendCallback {
 
-    private final static Logger LOG = LoggerFactory.getLogger(DefaultSendCallback.class);
 
     @Override
     public void onSuccess(SendResult sendResult) {
-        LOG.info("send message success. " + sendResult.toString());
+        log.info("send message success. {}", sendResult.toString());
     }
 
     @Override
     public void onException(OnExceptionContext context) {
-        LOG.warn("send message failed. topic=" + context.getTopic() + ", msgId=" + context.getMessageId(), context.getException());
+        log.warn("send message failed. topic=" + context.getTopic() + ", msgId=" + context.getMessageId(), context.getException());
     }
 }

@@ -1,4 +1,4 @@
-package cn.jboost.springboot.autoconfig.web.controller;
+package cn.jboost.springboot.common.web;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

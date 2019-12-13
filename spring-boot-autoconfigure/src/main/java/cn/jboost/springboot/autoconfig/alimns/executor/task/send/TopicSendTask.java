@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
-public class TopicSendTask extends AbstractSendTask<TopicMessage> {
+public class TopicSendTask extends AbstractSendTask {
 
 	private final String _topicName;
 
@@ -31,7 +31,7 @@ public class TopicSendTask extends AbstractSendTask<TopicMessage> {
 
 	private RawTopicMessage createTopicMessage() {
 		RawTopicMessage message = new RawTopicMessage();
-		message.setMessageTag(_messageDto.getMessageTag());
+		message.setMessageTag(messageDto.getMessageTag());
 		message.setMessageBody(createMnsTxt());
 		return message;
 	}
@@ -39,7 +39,7 @@ public class TopicSendTask extends AbstractSendTask<TopicMessage> {
 	private MessageAttributes createMessageAttribute() {
 
 		boolean isSet = false;
-		Map<String, Object> attributes = _messageDto.getMessageAttributes();
+		Map<String, Object> attributes = messageDto.getMessageAttributes();
 		if (MapUtils.isNotEmpty(attributes)) {
 			MailAttributes mailAttributes = new MailAttributes();
 

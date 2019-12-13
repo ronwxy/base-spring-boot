@@ -64,7 +64,7 @@ public class AliOssManager {
             String encodedPolicy = BinaryUtil.toBase64String(binaryData);
             String postSignature = client.calculatePostSignature(postPolicy);
 
-            Map<String, String> respMap = new LinkedHashMap<String, String>();
+            Map<String, String> respMap = new LinkedHashMap<>();
             respMap.put("accessid", properties.getAccessKeyId());
             respMap.put("policy", encodedPolicy);
             respMap.put("signature", postSignature);
@@ -153,8 +153,7 @@ public class AliOssManager {
         OSSClient ossClient = createOssClient();
         ObjectListing objectListing = ossClient.listObjects(new ListObjectsRequest(bucketName).withPrefix(keyPrefix).withMaxKeys(100));
         ossClient.shutdown();
-        List<OSSObjectSummary> sums = objectListing.getObjectSummaries();
-        return sums;
+        return objectListing.getObjectSummaries();
     }
 
 
@@ -299,8 +298,7 @@ public class AliOssManager {
      */
     public AppendObjectStream getAppendObjectStream(String bucketName, String objectName) {
         OSSClient ossClient = createOssClient();
-        AppendObjectStream objectStream = new AppendObjectStream(ossClient, bucketName, objectName);
-        return objectStream;
+        return new AppendObjectStream(ossClient, bucketName, objectName);
     }
 
     /**

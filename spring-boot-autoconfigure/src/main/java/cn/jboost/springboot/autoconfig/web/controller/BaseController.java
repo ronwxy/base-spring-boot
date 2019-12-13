@@ -3,6 +3,8 @@ package cn.jboost.springboot.autoconfig.web.controller;
 
 import cn.jboost.springboot.autoconfig.mybatisplus.service.BaseService;
 import cn.jboost.springboot.common.adapter.BaseAdapter;
+import cn.jboost.springboot.common.web.Page;
+import cn.jboost.springboot.common.web.PageResult;
 import cn.jboost.springboot.logging.annotation.LogInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
