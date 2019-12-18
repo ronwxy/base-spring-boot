@@ -159,11 +159,14 @@ public class MyBatisPlusQueryHelper {
             return wrapper;
         }
         Field[] fields = ReflectUtil.getFields(entity.getClass());
-        Arrays.stream(fields).forEach(f -> {
+        Arrays.stream(fields).forEach(field -> {
             try {
-                String columnName = getColumnName(f);
+                String columnName = getColumnName(field);
                 if (StrUtil.isNotEmpty(columnName)) {
-                    Object value = f.get(entity);
+                    boolean accessible = field.isAccessible();
+                    field.setAccessible(true);
+                    Object value = field.get(entity);
+                    field.setAccessible(accessible);
                     if (value != null) {
                         wrapper.eq(columnName, value);
                     }
@@ -182,6 +185,8 @@ public class MyBatisPlusQueryHelper {
      * @return
      */
     public static String getColumnName(Field field) {
+        boolean accessible = field.isAccessible();
+        field.setAccessible(true);
         TableField fieldAnnotation = field.getAnnotation(TableField.class);
         if (fieldAnnotation == null || fieldAnnotation.exist()) {
             String columnName;
@@ -192,6 +197,7 @@ public class MyBatisPlusQueryHelper {
             }
             return columnName;
         }
+        field.setAccessible(accessible);
         return null;
     }
 
@@ -204,7 +210,11 @@ public class MyBatisPlusQueryHelper {
     public static <T> String getColumnName(Class<T> target, String propName) {
         try {
             Field field = target.getDeclaredField(propName);
-            return getColumnName(field);
+            boolean accessible = field.isAccessible();
+            field.setAccessible(true);
+            String columnName = getColumnName(field);
+            field.setAccessible(accessible);
+            return columnName;
         } catch (NoSuchFieldException ex) {
             ExceptionUtil.rethrowClientSideException(CommonErrorCodeEnum.COLUMN_ABSENT.getMessage(), ex);
             return null;
@@ -216,12 +226,13 @@ public class MyBatisPlusQueryHelper {
 
     /**
      * 将自定义分页对象转换为mybatis-plus的分页对象
+     *
      * @param page
      * @param count
      * @return
      */
     public static Page buildPage(cn.jboost.springboot.common.web.Page page, boolean count) {
-       return buildPage(null, page, count);
+        return buildPage(null, page, count);
     }
 
     /**
@@ -229,16 +240,16 @@ public class MyBatisPlusQueryHelper {
      *
      * @param target 目标实体类
      * @param page   自定义分页对象
-     * @Param count 是否执行count查询
      * @param <T>
      * @return
+     * @Param count 是否执行count查询
      */
     public static <T> Page buildPage(Class<T> target, cn.jboost.springboot.common.web.Page page, boolean count) {
         Page p = new Page();
         p.setCurrent(page.getPage());
         p.setSize(page.getSize());
         p.setSearchCount(count);
-        if(!Objects.isNull(target)) {
+        if (!Objects.isNull(target)) {
             p.setOrders(buildOrderItems(target, page.getSort()));
         }
         return p;

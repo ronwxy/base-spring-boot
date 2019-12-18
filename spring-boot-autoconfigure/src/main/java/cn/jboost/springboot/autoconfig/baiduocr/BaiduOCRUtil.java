@@ -28,7 +28,7 @@ public class BaiduOCRUtil {
      * @return
      */
     public static Map<String, Object> getGeneralContent(JSONObject jsonObject, Map<String, Object> params) {
-        String json = JSONUtil.toJsonStr(jsonObject);
+        String json = jsonObject.toString();
         OcrGeneralContent ocrGeneralContent = JSONUtil.toBean(json, OcrGeneralContent.class);
         Integer errorCode = ocrGeneralContent.getError_code();
         if (errorCode != null && errorCode != 0) {
@@ -66,7 +66,7 @@ public class BaiduOCRUtil {
      * @return
      */
     public static String getCustomerContent(JSONObject jsonObject) {
-        String json = JSONUtil.toJsonStr(jsonObject);
+        String json = jsonObject.toString();
         OcrCustomerContent ocrCustomerContent = JSONUtil.toBean(json, OcrCustomerContent.class);
         Integer errorCode = ocrCustomerContent.getError_code();
         if (errorCode != null && errorCode != 0) {
