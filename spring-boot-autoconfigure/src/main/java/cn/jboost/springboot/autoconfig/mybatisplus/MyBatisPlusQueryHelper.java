@@ -245,6 +245,9 @@ public class MyBatisPlusQueryHelper {
      * @Param count 是否执行count查询
      */
     public static <T> Page buildPage(Class<T> target, cn.jboost.springboot.common.web.Page page, boolean count) {
+        if (Objects.isNull(page)) {
+            return null;
+        }
         Page p = new Page();
         p.setCurrent(page.getPage());
         p.setSize(page.getSize());

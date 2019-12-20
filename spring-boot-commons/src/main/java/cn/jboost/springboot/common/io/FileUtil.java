@@ -1,6 +1,7 @@
 package cn.jboost.springboot.common.io;
 
 import cn.hutool.core.util.IdUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.text.DecimalFormat;
 /**
  * File工具类，扩展 hutool 工具包
  */
+@Slf4j
 public class FileUtil extends cn.hutool.core.io.FileUtil {
 
     /**
@@ -47,7 +49,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
             // MultipartFile to File
             multipartFile.transferTo(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("fail to transfer multipartFile[{}] to file", fileName, e);
         }
         return file;
     }

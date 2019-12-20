@@ -2,6 +2,7 @@ package cn.jboost.springboot.common.exception;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Objects;
 
 /**
  * 异常工具类
@@ -10,6 +11,9 @@ import java.io.StringWriter;
  * @date 2018/6/5 18:11
  */
 public class ExceptionUtil {
+
+    private ExceptionUtil() {
+    }
 
     public static void rethrowClientSideException(String message, Throwable cause) {
         throw new ClientSideException(message, cause);
@@ -38,18 +42,22 @@ public class ExceptionUtil {
     public static void rethrowServerSideException(String message, Throwable cause) {
         throw new ServerSideException(message, cause);
     }
+
     public static void rethrowServerSideException(String message) {
         rethrowServerSideException(message, null);
     }
 
     public static String extractStackTrace(Throwable error) {
+        if (Objects.isNull(error)) {
+            return "";
+        }
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         try {
             error.printStackTrace(pw);
             sw.flush();
             return sw.toString();
-        }finally {
+        } finally {
             pw.close();
         }
     }

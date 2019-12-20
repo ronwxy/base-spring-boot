@@ -1,6 +1,7 @@
 package cn.jboost.springboot.autoconfig.mybatisplus.service;//package cn.jboost.springboot.parent.service;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.jboost.springboot.autoconfig.mybatisplus.MyBatisPlusQueryHelper;
 import cn.jboost.springboot.common.web.PageResult;
 import cn.jboost.springboot.common.adapter.BaseAdapter;
@@ -94,8 +95,9 @@ public abstract class BaseService<T, D extends Serializable> {
      * @param dto
      * @return
      */
-    public D updateById(D dto) {
+    public D updateById(Serializable id, D dto) {
         T entity = baseAdapter.toEntity(dto);
+        ReflectUtil.setFieldValue(entity, "id", id);
         mapper.updateById(entity);
         return baseAdapter.toDTO(entity);
     }
@@ -266,7 +268,7 @@ public abstract class BaseService<T, D extends Serializable> {
      */
     public <Q> PageResult<D> pageByCriteria(Q queryCriteria, cn.jboost.springboot.common.web.Page page, boolean searchCount) {
         Page p = MyBatisPlusQueryHelper.buildPage(entityType, page, searchCount);
-        return convertPage(mapper.selectPage(p, MyBatisPlusQueryHelper.buildQuery(entityType, queryCriteria)));
+        return convertPage(mapper.selectPage(p, MyBatisPlusQueryHelper.buildQuery(entityType, queryCriteria)), true);
     }
 
     /**
@@ -280,14 +282,18 @@ public abstract class BaseService<T, D extends Serializable> {
         return mapper.selectMapsPage(page, queryWrapper);
     }
 
-    protected PageResult<D> convertPage(IPage<T> page) {
+    protected PageResult convertPage(IPage page, boolean dataConvert) {
         if (ObjectUtil.isNull(page)) {
             return null;
         }
-        PageResult<D> result = new PageResult<>();
+        PageResult result = new PageResult<>();
         result.setPages(page.getPages());
         result.setTotal(page.getTotal());
-        result.setData((List<D>) baseAdapter.toDTO(page.getRecords()));
+        if (dataConvert) {
+            result.setData((List) baseAdapter.toDTO(page.getRecords()));
+        } else {
+            result.setData(page.getRecords());
+        }
         return result;
     }
 

@@ -8,17 +8,17 @@ import java.util.Objects;
  * 用于自增主键场景
  * use it to define an entity with an ID named {@code id},and with a default equals and hashcode depends on {@code id}
  *
- * @param <ID>
+ * @param <>
  */
-public abstract class AutoIncrementKeyBaseDomain<ID extends Serializable> extends BaseDomain {
+public abstract class AutoIncrementKeyBaseDomain extends BaseDomain {
 	@Id
-	protected ID id;
+	protected Serializable id;
 
-	public ID getId() {
+	public Serializable  getId() {
 		return id;
 	}
 
-	public void setId(ID id) {
+	public void setId(Serializable id) {
 		this.id = id;
 	}
 
@@ -26,7 +26,7 @@ public abstract class AutoIncrementKeyBaseDomain<ID extends Serializable> extend
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		AutoIncrementKeyBaseDomain<?> that = (AutoIncrementKeyBaseDomain<?>) o;
+		AutoIncrementKeyBaseDomain that = (AutoIncrementKeyBaseDomain) o;
 		return Objects.equals(id, that.id);
 	}
 

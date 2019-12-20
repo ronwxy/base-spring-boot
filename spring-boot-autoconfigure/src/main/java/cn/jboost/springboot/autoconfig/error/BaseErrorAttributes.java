@@ -39,7 +39,7 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
                 trace = ExceptionUtil.extractStackTrace(error);
             }
         }
-        String msgAttr = getAttribute(webRequest, "javax.servlet.error.message");
+        String msgAttr = internalGetAttribute(webRequest, "javax.servlet.error.message");
         if ((!StringUtils.isEmpty(msgAttr) || "".equals(message))
                 && !(error instanceof BindingResult)) {
             message = StringUtils.isEmpty(msgAttr) ? "No message available" : msgAttr;
@@ -49,7 +49,7 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
     }
 
     private int getStatus(RequestAttributes requestAttributes) {
-        Integer status = getAttribute(requestAttributes,
+        Integer status = internalGetAttribute(requestAttributes,
                 "javax.servlet.error.status_code");
         return (status == null ? HttpStatus.BAD_REQUEST.value() : status);
     }
@@ -65,7 +65,7 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
     }
 
     private String getErrorMessage(Throwable error) {
-        BindingResult result = extractBindingResult(error);
+        BindingResult result = internalExtractBindingResult(error);
         if (result == null) {
             return error.getMessage();
         }
@@ -77,7 +77,7 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
         }
     }
 
-    private BindingResult extractBindingResult(Throwable error) {
+    private BindingResult internalExtractBindingResult(Throwable error) {
         if (error instanceof BindingResult) {
             return (BindingResult) error;
         }
@@ -87,7 +87,7 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
         return null;
     }
 
-    private <T> T getAttribute(RequestAttributes requestAttributes, String name) {
+    private <T> T internalGetAttribute(RequestAttributes requestAttributes, String name) {
         return (T) requestAttributes.getAttribute(name, RequestAttributes.SCOPE_REQUEST);
     }
 

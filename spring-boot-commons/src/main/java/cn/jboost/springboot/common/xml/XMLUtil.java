@@ -15,22 +15,21 @@ public class XMLUtil {
 
     private static final String SEPARATOR = " ";
 
+    private XMLUtil() {
+    }
+
     /**
      * 将xml文本转换为map对象, 节点的参数以"@节点名"为key，以"{参数名=参数值}"格式存储
      *
      * @param xmlStr
      * @return
      */
-    public static Map<String, Object> xml2Map(String xmlStr) {
+    public static Map<String, Object> xml2Map(String xmlStr) throws DocumentException {
         Map<String, Object> map = new LinkedHashMap<>();
-        try {
-            Document doc = DocumentHelper.parseText(xmlStr);
-            Element rootElement = doc.getRootElement();
-            xml2Map(rootElement, map);
-            return map;
-        } catch (DocumentException e) {
-        }
-        return null;
+        Document doc = DocumentHelper.parseText(xmlStr);
+        Element rootElement = doc.getRootElement();
+        xml2Map(rootElement, map);
+        return map;
     }
 
     private static void xml2Map(Element element, Map<String, Object> map) {
@@ -84,7 +83,7 @@ public class XMLUtil {
         while (i.hasNext()) {
             Map.Entry<String, Object> e = (Map.Entry<String, Object>) i.next();
             String key = e.getKey();
-            if (key.indexOf("@") >= 0) {
+            if (key.indexOf('@') >= 0) {
                 continue;
             }
             childStb.append("<").append(key);

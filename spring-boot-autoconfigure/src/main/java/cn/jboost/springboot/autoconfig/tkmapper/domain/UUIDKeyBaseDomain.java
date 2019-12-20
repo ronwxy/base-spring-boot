@@ -29,7 +29,7 @@ public abstract class UUIDKeyBaseDomain extends BaseDomain  {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AutoIncrementKeyBaseDomain<?> that = (AutoIncrementKeyBaseDomain<?>) o;
+        AutoIncrementKeyBaseDomain that = (AutoIncrementKeyBaseDomain) o;
         return Objects.equals(id, that.id);
     }
 

@@ -21,12 +21,12 @@ import java.util.Optional;
 * @Date 2019/6/20 18:11
 */
 @LogInfo
-public abstract class BaseController<ID extends Serializable, T extends BaseDomain> {
+public abstract class BaseController<T extends BaseDomain> {
 
     protected Class<T> domainClass;
 
     @Autowired
-    protected BaseService<ID, T> baseService;
+    protected BaseService<T> baseService;
 
     public BaseController() {
         Type[] types = ((ParameterizedType) (this.getClass().getGenericSuperclass())).getActualTypeArguments();
@@ -44,12 +44,12 @@ public abstract class BaseController<ID extends Serializable, T extends BaseDoma
     }
 
     @GetMapping("{id}")
-    public T findById(@PathVariable("id") ID id) {
+    public T findById(@PathVariable("id") Serializable id) {
         return baseService.selectByPk(id);
     }
 
     @GetMapping("batch")
-    public List<T> findByIds(@RequestParam("ids") List<ID> ids) {
+    public List<T> findByIds(@RequestParam("ids") List<Serializable> ids) {
         return baseService.selectByPks(ids);
     }
 
@@ -74,12 +74,12 @@ public abstract class BaseController<ID extends Serializable, T extends BaseDoma
     }
 
     @DeleteMapping("{id}")
-    public void deleteById(@PathVariable("id") ID id) {
+    public void deleteById(@PathVariable("id") Serializable id) {
             baseService.deleteByPk(id);
     }
 
     @DeleteMapping("batch")
-    public void deleteByIds(@RequestParam("ids") Collection<ID> ids) {
+    public void deleteByIds(@RequestParam("ids") Collection<Serializable> ids) {
             baseService.deleteByPks(ids);
     }
 }

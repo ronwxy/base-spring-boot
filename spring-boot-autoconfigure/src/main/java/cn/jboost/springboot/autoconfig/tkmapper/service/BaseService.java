@@ -16,6 +16,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
@@ -33,10 +34,9 @@ import java.util.List;
  *     }
  * </pre>
  *
- * @param <PK>
  * @param <T>
  */
-public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
+public abstract class BaseService<T> implements IBaseService<T> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     protected final Class<T> domainType;
@@ -73,12 +73,12 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
     }
 
     @Override
-    public T selectByPk(PK pk) {
+    public T selectByPk(Serializable pk) {
         return mapper.selectByPrimaryKey(pk);
     }
 
     @Override
-    public List<T> selectByPks(Collection<PK> pks) {
+    public List<T> selectByPks(Collection<Serializable> pks) {
         Example example = new Example(domainType);
         example.createCriteria().andIn(pkField.getName(), pks);
         return mapper.selectByExample(example);
@@ -169,7 +169,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
 
     @Override
     public T create(T entity) {
-        Object pk = _getPkValue(entity);
+        Object pk = getPkValue(entity);
         //主键无值，并且没有添加KeySql, GeneratedValue注解，则由数据库产生主键，插入时忽略id字段。主要针对自动生成自增主键的情况
         if (pk == null && pkField.getAnnotation(KeySql.class) == null && pkField.getAnnotation(GeneratedValue.class) == null) {
             mapper.insertUseGeneratedKeys(entity);
@@ -189,7 +189,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         int rows = mapper.updateByPrimaryKey(entity);
         if (rows == 0) {
             throw new DataRetrievalFailureException("No update for ["
-                    + domainType.getTypeName() + "], pk:" + _getPkValue(entity));
+                    + domainType.getTypeName() + "], pk:" + getPkValue(entity));
         }
         return entity;
     }
@@ -199,9 +199,9 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         int rows = mapper.updateByPrimaryKeySelective(entity);
         if (rows == 0) {
             throw new DataRetrievalFailureException("No update for ["
-                    + domainType.getTypeName() + "], pk:" + _getPkValue(entity));
+                    + domainType.getTypeName() + "], pk:" + getPkValue(entity));
         }
-        Object pk = _getPkValue(entity);
+        Object pk = getPkValue(entity);
         return mapper.selectByPrimaryKey(pk);
     }
 
@@ -225,7 +225,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
     }
 
     @Override
-    public void deleteByPk(PK pk) {
+    public void deleteByPk(Serializable pk) {
         int rows = mapper.deleteByPrimaryKey(pk);
         if (rows == 0) {
             throw new DataRetrievalFailureException("No delete for ["
@@ -234,7 +234,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
     }
 
     @Override
-    public int deleteByPks(Collection<PK> pks) {
+    public int deleteByPks(Collection<Serializable> pks) {
         Example example = new Example(domainType);
         example.createCriteria().andIn(pkField.getName(), pks);
         return mapper.deleteByExample(example);
@@ -245,7 +245,7 @@ public abstract class BaseService<PK, T> implements IBaseService<PK, T> {
         return mapper.deleteByExample(example);
     }
 
-    private Object _getPkValue(T entity) {
+    private Object getPkValue(T entity) {
         try {
             pkField.setAccessible(true);
             return pkField.get(entity);

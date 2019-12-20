@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @Date 2019/6/20 18:11
  */
 @LogInfo
-public abstract class BaseAdapterController<ID extends Serializable, T extends BaseDomain, R extends Serializable> {
+public abstract class BaseAdapterController<T extends BaseDomain, R extends Serializable> {
 
     protected Class<T> domainClass;
     protected Class<R> dtoClass;
@@ -32,7 +32,7 @@ public abstract class BaseAdapterController<ID extends Serializable, T extends B
     @Autowired
     protected BaseAdapter<T, R> beanAdapter;
     @Autowired
-    protected BaseService<ID, T> baseService;
+    protected BaseService<T> baseService;
 
     public BaseAdapterController() {
         Type[] types = ((ParameterizedType) (this.getClass().getGenericSuperclass())).getActualTypeArguments();
@@ -51,12 +51,12 @@ public abstract class BaseAdapterController<ID extends Serializable, T extends B
     }
 
     @GetMapping("{id}")
-    public R findById(@PathVariable("id") ID id) {
+    public R findById(@PathVariable("id") Serializable id) {
         return beanAdapter.toDTO(baseService.selectByPk(id));
     }
 
     @GetMapping("batch")
-    public List<R> findByIds(@RequestParam("ids") List<ID> ids) {
+    public List<R> findByIds(@RequestParam("ids") List<Serializable> ids) {
         return (List<R>) beanAdapter.toDTO(baseService.selectByPks(ids));
     }
 
@@ -83,12 +83,12 @@ public abstract class BaseAdapterController<ID extends Serializable, T extends B
     }
 
     @DeleteMapping("{id}")
-    public void deleteById(@PathVariable("id") ID id) {
+    public void deleteById(@PathVariable("id") Serializable id) {
         baseService.deleteByPk(id);
     }
 
     @DeleteMapping("batch")
-    public void deleteByIds(@RequestParam("ids") Collection<ID> ids) {
+    public void deleteByIds(@RequestParam("ids") Collection<Serializable> ids) {
         baseService.deleteByPks(ids);
     }
 

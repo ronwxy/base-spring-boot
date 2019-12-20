@@ -44,9 +44,9 @@ public abstract class BaseController<T, D extends Serializable, Q> {
         return baseService.create(d);
     }
 
-    @PutMapping
-    public D update(@Validated @RequestBody D d) {
-        return baseService.updateById(d);
+    @PutMapping("{id}")
+    public D update(@PathVariable("id") Serializable id, @Validated @RequestBody D d) {
+        return baseService.updateById(id, d);
     }
 
     @GetMapping("{id}")

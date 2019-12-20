@@ -5,10 +5,11 @@ import cn.jboost.springboot.autoconfig.tkmapper.util.QueryResult;
 import org.apache.ibatis.session.RowBounds;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-public interface IBaseService<PK, T> {
+public interface IBaseService<T> {
 
     /**
     * 获取满足条件的第一条记录
@@ -22,14 +23,14 @@ public interface IBaseService<PK, T> {
     * @param
     * @return
     */
-    T selectByPk(PK pk);
+    T selectByPk(Serializable pk);
 
     /**
     * 根据主键集合获取
     * @param
     * @return
     */
-    List<T> selectByPks(Collection<PK> pks);
+    List<T> selectByPks(Collection<Serializable> pks);
 
     /**
     * 获取满足条件的记录条数
@@ -148,9 +149,9 @@ public interface IBaseService<PK, T> {
 
     void delete(T t);
 
-    void deleteByPk(PK pk);
+    void deleteByPk(Serializable pk);
 
-    int deleteByPks(Collection<PK> pks);
+    int deleteByPks(Collection<Serializable> pks);
 
     int deleteByExample(Example example);
 
