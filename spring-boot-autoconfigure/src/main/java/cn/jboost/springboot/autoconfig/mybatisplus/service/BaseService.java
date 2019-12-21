@@ -3,8 +3,9 @@ package cn.jboost.springboot.autoconfig.mybatisplus.service;//package cn.jboost.
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.jboost.springboot.autoconfig.mybatisplus.MyBatisPlusQueryHelper;
-import cn.jboost.springboot.common.web.PageResult;
 import cn.jboost.springboot.common.adapter.BaseAdapter;
+import cn.jboost.springboot.common.exception.ExceptionUtil;
+import cn.jboost.springboot.common.web.PageResult;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,6 +17,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * service 基类，继承该类即获得基本的curd功能
@@ -95,9 +97,11 @@ public abstract class BaseService<T, D extends Serializable> {
      * @param dto
      * @return
      */
-    public D updateById(Serializable id, D dto) {
+    public D updateById(D dto) {
+        if(Objects.isNull(ReflectUtil.getFieldValue(dto, "id"))){
+            ExceptionUtil.rethrowClientSideException("id不能为空");
+        }
         T entity = baseAdapter.toEntity(dto);
-        ReflectUtil.setFieldValue(entity, "id", id);
         mapper.updateById(entity);
         return baseAdapter.toDTO(entity);
     }

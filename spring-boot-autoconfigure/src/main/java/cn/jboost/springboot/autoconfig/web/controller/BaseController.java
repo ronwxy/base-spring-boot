@@ -1,6 +1,7 @@
 package cn.jboost.springboot.autoconfig.web.controller;
 
 
+import cn.hutool.core.util.ReflectUtil;
 import cn.jboost.springboot.autoconfig.mybatisplus.service.BaseService;
 import cn.jboost.springboot.common.adapter.BaseAdapter;
 import cn.jboost.springboot.common.web.Page;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /***
  * 需要转换成DTO类型bean的base controller
@@ -46,7 +48,10 @@ public abstract class BaseController<T, D extends Serializable, Q> {
 
     @PutMapping("{id}")
     public D update(@PathVariable("id") Serializable id, @Validated @RequestBody D d) {
-        return baseService.updateById(id, d);
+        if(!Objects.isNull(id)){
+            ReflectUtil.setFieldValue(d, "id", id);
+        }
+        return baseService.updateById(d);
     }
 
     @GetMapping("{id}")

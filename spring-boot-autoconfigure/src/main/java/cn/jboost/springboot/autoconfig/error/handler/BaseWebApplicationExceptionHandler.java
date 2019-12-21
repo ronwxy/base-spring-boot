@@ -9,11 +9,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
+
+import java.util.List;
 
 /**
  * 统一异常处理类
@@ -27,6 +33,32 @@ public class BaseWebApplicationExceptionHandler extends ResponseEntityExceptionH
     public BaseWebApplicationExceptionHandler(boolean includeStackTrace) {
         super();
         this.includeStackTrace = includeStackTrace;
+    }
+
+    /**
+     * 处理参数校验异常
+     *
+     * @param ex
+     * @return
+     */
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+        String message = "";
+        BindingResult result = ex.getBindingResult();
+        //组装校验错误信息
+        if (result.hasErrors()) {
+            List<ObjectError> list = result.getAllErrors();
+            StringBuilder errorMsgBuffer = new StringBuilder();
+            for (ObjectError error : list) {
+                if (error instanceof FieldError) {
+                    FieldError errorMessage = (FieldError) error;
+                    errorMsgBuffer.append(errorMessage.getDefaultMessage()).append(",");
+                }
+            }
+            //返回信息格式处理
+            message = errorMsgBuffer.toString().substring(0, errorMsgBuffer.length() - 1);
+        }
+        return this.asResponseEntity(HttpStatus.BAD_REQUEST, message, ex);
     }
 
     @ExceptionHandler(BizException.class)
