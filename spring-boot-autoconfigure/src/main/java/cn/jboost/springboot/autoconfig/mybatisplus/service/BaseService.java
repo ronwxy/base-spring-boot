@@ -7,10 +7,22 @@ import cn.jboost.springboot.common.adapter.BaseAdapter;
 import cn.jboost.springboot.common.exception.ExceptionUtil;
 import cn.jboost.springboot.common.web.PageResult;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.enums.SqlMethod;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
+import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import org.apache.ibatis.binding.MapperMethod;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -284,6 +296,84 @@ public abstract class BaseService<T, D extends Serializable> {
      */
     public IPage<Map<String, Object>> pageMapsByWrapper(IPage<T> page, Wrapper<T> queryWrapper) {
         return mapper.selectMapsPage(page, queryWrapper);
+    }
+
+    /**
+     * 批量操作 SqlSession
+     */
+    protected SqlSession sqlSessionBatch() {
+        return SqlHelper.sqlSessionBatch(entityType);
+    }
+
+    /**
+     * 获取 SqlStatement
+     *
+     * @param sqlMethod ignore
+     * @return ignore
+     */
+    protected String sqlStatement(SqlMethod sqlMethod) {
+        return SqlHelper.table(entityType).getSqlStatement(sqlMethod.getMethod());
+    }
+
+    /**
+     * 批量插入
+     * @param dtos
+     * @param batchSize
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean saveBatch(Collection<D> dtos, int batchSize) {
+        List<T> entityList = (List<T>) baseAdapter.toEntity(dtos);
+        String sqlStatement = sqlStatement(SqlMethod.INSERT_ONE);
+        try (SqlSession batchSqlSession = sqlSessionBatch()) {
+            int i = 0;
+            for (T anEntityList : entityList) {
+                batchSqlSession.insert(sqlStatement, anEntityList);
+                if (i >= 1 && i % batchSize == 0) {
+                    batchSqlSession.flushStatements();
+                }
+                i++;
+            }
+            batchSqlSession.flushStatements();
+        }
+        return true;
+    }
+
+    /**
+     * 批量插入或更新
+     * @param dtos
+     * @param batchSize
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean saveOrUpdateBatch(Collection<D> dtos, int batchSize) {
+        List<T> entityList = (List<T>) baseAdapter.toEntity(dtos);
+        Assert.notEmpty(entityList, "error: entityList must not be empty");
+        Class<?> cls = entityType;
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
+        Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
+        String keyProperty = tableInfo.getKeyProperty();
+        Assert.notEmpty(keyProperty, "error: can not execute. because can not find column for id from entity!");
+        try (SqlSession batchSqlSession = sqlSessionBatch()) {
+            int i = 0;
+            for (T entity : entityList) {
+                Object idVal = ReflectionKit.getMethodValue(cls, entity, keyProperty);
+                if (StringUtils.checkValNull(idVal) || Objects.isNull(selectById((Serializable) idVal))) {
+                    batchSqlSession.insert(sqlStatement(SqlMethod.INSERT_ONE), entity);
+                } else {
+                    MapperMethod.ParamMap<T> param = new MapperMethod.ParamMap<>();
+                    param.put(Constants.ENTITY, entity);
+                    batchSqlSession.update(sqlStatement(SqlMethod.UPDATE_BY_ID), param);
+                }
+                // 不知道以后会不会有人说更新失败了还要执行插入 😂😂😂
+                if (i >= 1 && i % batchSize == 0) {
+                    batchSqlSession.flushStatements();
+                }
+                i++;
+            }
+            batchSqlSession.flushStatements();
+        }
+        return true;
     }
 
     protected PageResult convertPage(IPage page, boolean dataConvert) {
