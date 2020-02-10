@@ -15,7 +15,9 @@ public class MyBatisPlusAutoConfiguration {
 
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+        PaginationInterceptor interceptor = new PaginationInterceptor();
+        interceptor.setLimit(10000); //最大单页限制数，-1 无限制
+        return interceptor;
     }
 
     @Bean
