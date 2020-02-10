@@ -3,6 +3,7 @@ package cn.jboost.springboot.autoconfig.mybatisplus.service;//package cn.jboost.
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.jboost.springboot.autoconfig.mybatisplus.MyBatisPlusQueryHelper;
+import cn.jboost.springboot.autoconfig.mybatisplus.TimeSqlInterceptor;
 import cn.jboost.springboot.common.adapter.BaseAdapter;
 import cn.jboost.springboot.common.exception.ExceptionUtil;
 import cn.jboost.springboot.common.web.PageResult;
@@ -13,11 +14,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
-import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.session.SqlSession;
@@ -362,10 +361,9 @@ public abstract class BaseService<T, D extends Serializable> {
                     batchSqlSession.insert(sqlStatement(SqlMethod.INSERT_ONE), entity);
                 } else {
                     MapperMethod.ParamMap<T> param = new MapperMethod.ParamMap<>();
-                    param.put(Constants.ENTITY, entity);
+                    param.put(TimeSqlInterceptor.PARAM_NAME, entity);
                     batchSqlSession.update(sqlStatement(SqlMethod.UPDATE_BY_ID), param);
                 }
-                // 不知道以后会不会有人说更新失败了还要执行插入 😂😂😂
                 if (i >= 1 && i % batchSize == 0) {
                     batchSqlSession.flushStatements();
                 }
