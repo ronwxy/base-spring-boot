@@ -1,6 +1,7 @@
 package cn.jboost.springboot.autoconfig.mybatisplus;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -22,8 +23,6 @@ import java.util.Properties;
  */
 @Intercepts(value = {@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})})
 public class TimeSqlInterceptor extends AbstractSqlParserHandler implements Interceptor {
-
-    public static final String PARAM_NAME = "et";
 
     /**
      * 创建时间
@@ -53,7 +52,7 @@ public class TimeSqlInterceptor extends AbstractSqlParserHandler implements Inte
         //兼容mybatis plus
         if (plus) {
             Map<String, Object> updateParam = (Map<String, Object>) parameter;
-            Class<?> updateParamType = updateParam.get(PARAM_NAME).getClass();
+            Class<?> updateParamType = updateParam.get(Constants.ENTITY).getClass();
             declaredFields = updateParamType.getDeclaredFields();
             if (updateParamType.getSuperclass() != null) {
                 Field[] superField = updateParamType.getSuperclass().getDeclaredFields();
@@ -75,7 +74,7 @@ public class TimeSqlInterceptor extends AbstractSqlParserHandler implements Inte
                     //兼容mybatis plus的update
                     if (plus) {
                         Map<String, Object> updateParam = (Map<String, Object>) parameter;
-                        field.set(updateParam.get(PARAM_NAME), LocalDateTime.now());
+                        field.set(updateParam.get(Constants.ENTITY), LocalDateTime.now());
                     } else {
                         field.set(parameter, LocalDateTime.now());
                     }
