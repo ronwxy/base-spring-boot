@@ -3,6 +3,7 @@ package cn.jboost.springboot.autoconfig.mybatisplus;
 import cn.hutool.core.util.ArrayUtil;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
+import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
@@ -40,26 +41,24 @@ public class TimeSqlInterceptor extends AbstractSqlParserHandler implements Inte
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
         // 获取新增或修改的对象参数
         Object parameter = invocation.getArgs()[1];
+        //参数直接为Entity对象或存在命名为et的参数才处理；
+        //mybatis对未命名的Entity对象参数，parameter直接是对象本身，对命名的或参数列表，会将其封装到ParamMap中
+        if (parameter.getClass().equals(MapperMethod.ParamMap.class)) {
+            if (!((Map<String, Object>) parameter).containsKey(Constants.ENTITY)) {
+                return invocation.proceed();
+            } else {
+                parameter = ((Map<String, Object>) parameter).get(Constants.ENTITY);
+            }
+        }
+
         // 获取对象中所有的私有成员变量（对应表字段）
         Field[] declaredFields = parameter.getClass().getDeclaredFields();
         if (parameter.getClass().getSuperclass() != null) {
             Field[] superField = parameter.getClass().getSuperclass().getDeclaredFields();
             declaredFields = ArrayUtil.addAll(declaredFields, superField);
         }
-        // mybatis plus判断
-        boolean plus = parameter.getClass().getDeclaredFields().length == 1 && parameter.getClass().getDeclaredFields()[0].getName().equals("serialVersionUID");
 
-        //兼容mybatis plus
-        if (plus) {
-            Map<String, Object> updateParam = (Map<String, Object>) parameter;
-            Class<?> updateParamType = updateParam.get(Constants.ENTITY).getClass();
-            declaredFields = updateParamType.getDeclaredFields();
-            if (updateParamType.getSuperclass() != null) {
-                Field[] superField = updateParamType.getSuperclass().getDeclaredFields();
-                declaredFields = ArrayUtil.addAll(declaredFields, superField);
-            }
-        }
-        String fieldName = null;
+        String fieldName;
         for (Field field : declaredFields) {
             fieldName = field.getName();
             if (Objects.equals(CREATE_TIME, fieldName)) {
@@ -71,13 +70,7 @@ public class TimeSqlInterceptor extends AbstractSqlParserHandler implements Inte
             if (Objects.equals(UPDATE_TIME, fieldName)) {
                 if (SqlCommandType.UPDATE.equals(sqlCommandType)) {
                     field.setAccessible(true);
-                    //兼容mybatis plus的update
-                    if (plus) {
-                        Map<String, Object> updateParam = (Map<String, Object>) parameter;
-                        field.set(updateParam.get(Constants.ENTITY), LocalDateTime.now());
-                    } else {
-                        field.set(parameter, LocalDateTime.now());
-                    }
+                    field.set(parameter, LocalDateTime.now());
                 }
             }
         }
