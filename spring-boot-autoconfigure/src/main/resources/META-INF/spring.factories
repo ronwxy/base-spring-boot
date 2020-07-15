@@ -3,7 +3,7 @@ cn.jboost.springboot.autoconfig.alimns.MnsAutoConfiguration,\
 cn.jboost.springboot.autoconfig.alimq.config.AliMQAutoConfiguration,\
 cn.jboost.springboot.autoconfig.alioss.AliOssAutoConfiguration,\
 cn.jboost.springboot.autoconfig.alisms.AliSmsAutoConfiguration,\
-cn.jboost.springboot.autoconfig.aoplog.AopLoggerAutoConfiguration,\
+cn.jboost.springboot.autoconfig.aoplog.AOPLogAutoConfiguration,\
 cn.jboost.springboot.autoconfig.baiduocr.BaiduOCRAutoConfiguration,\
 cn.jboost.springboot.autoconfig.druid.DruidAutoConfiguration,\
 cn.jboost.springboot.autoconfig.error.ExceptionHandlerAutoConfiguration,\

@@ -63,7 +63,7 @@ public class RedisLimitAspect {
                 key = String.valueOf(userId);
                 break;
             case METHOD:
-                key = ((Class) point.getTarget()).getName() + ":" + ((MethodSignature) point.getSignature()).getMethod().getName();
+                key = point.getTarget().getClass().getName() + ":" + ((MethodSignature) point.getSignature()).getMethod().getName();
                 break;
             case CUSTOM:
                 key = String.valueOf(resolve(point, originKey));
