@@ -1,6 +1,6 @@
 package cn.jboost.springboot.autoconfig.alimq.producer;
 
-import cn.jboost.springboot.common.jackson.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.transaction.LocalTransactionChecker;
 import com.aliyun.openservices.ons.api.transaction.TransactionStatus;
@@ -20,7 +20,7 @@ public abstract class AbstractLocalTransactionChecker implements LocalTransactio
 
     @Override
     public TransactionStatus check(Message message) {
-        Map<String, Object> msgMap = (Map<String, Object>) JsonUtil.fromJson(message.getBody(), Map.class);
+        Map<String, Object> msgMap = (Map<String, Object>) JSONUtil.toBean(new String(message.getBody()), Map.class);
         try {
             boolean isCommit = this.localTranCheck(msgMap);
             if (isCommit) {

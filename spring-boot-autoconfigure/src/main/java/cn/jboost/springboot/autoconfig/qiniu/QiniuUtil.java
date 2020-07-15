@@ -1,7 +1,8 @@
 package cn.jboost.springboot.autoconfig.qiniu;
 
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.json.JSONUtil;
 import com.google.common.base.Strings;
-import cn.jboost.springboot.common.jackson.JsonUtil;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.processing.OperationManager;
@@ -9,7 +10,6 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import com.qiniu.util.UrlSafeBase64;
-import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,8 +74,8 @@ public class QiniuUtil {
 		String newKey;
 		Response res = _qiniuUploudManager.put(file, key, token, null, mimeType, true);
 		if (Strings.isNullOrEmpty(key) && res.isJson()) {
-			Map<String, Object> jsonResult = JsonUtil.parseMap(res.bodyString());
-			newKey = MapUtils.getString(jsonResult, "key");
+			Map<String, Object> jsonResult = JSONUtil.toBean(res.bodyString(), Map.class);
+			newKey = MapUtil.getStr(jsonResult, "key");
 		} else {
 			newKey = key;
 		}

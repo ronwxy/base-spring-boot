@@ -1,9 +1,9 @@
 package cn.jboost.springboot.autoconfig.web.filter;
 
-import cn.jboost.springboot.autoconfig.error.ErrorResponse;
+import cn.jboost.springboot.common.util.ResponseWrapper;
 import cn.jboost.springboot.common.exception.ForbiddenException;
 import cn.jboost.springboot.common.exception.UnauthorizedException;
-import cn.jboost.springboot.common.web.WebUtil;
+import cn.jboost.springboot.common.util.WebUtil;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.*;
@@ -29,7 +29,7 @@ public class ExceptionHandlerFilter implements Filter {
             } else {
                 httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             }
-            ErrorResponse errorResponse = new ErrorResponse(httpServletResponse.getStatus(), e.getMessage());
+            ResponseWrapper errorResponse = new ResponseWrapper(httpServletResponse.getStatus(), e.getMessage());
             WebUtil.outputJson(errorResponse, (HttpServletRequest) request, httpServletResponse);
         }
     }

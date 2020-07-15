@@ -1,6 +1,6 @@
 package cn.jboost.springboot.autoconfig.redis.client;
 
-import cn.jboost.springboot.common.jackson.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
@@ -26,7 +26,7 @@ public class JsonRedisSerializer<T> implements RedisSerializer<T> {
         if (t == null) {
             return new byte[0];
         }
-        return JsonUtil.toJson(t).getBytes(DEFAULT_CHARSET);
+        return JSONUtil.toJsonStr(t).getBytes(DEFAULT_CHARSET);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class JsonRedisSerializer<T> implements RedisSerializer<T> {
             return null;
         }
         String str = new String(bytes, DEFAULT_CHARSET);
-        return (T) JsonUtil.fromJson(str, clazz);
+        return (T) JSONUtil.toBean(str, clazz);
     }
 
 }

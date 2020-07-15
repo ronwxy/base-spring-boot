@@ -4,8 +4,6 @@ import cn.jboost.springboot.autoconfig.tkmapper.domain.BaseDomain;
 import cn.jboost.springboot.autoconfig.tkmapper.service.BaseService;
 import cn.jboost.springboot.autoconfig.tkmapper.util.QueryResult;
 import cn.jboost.springboot.common.adapter.BaseAdapter;
-import cn.jboost.springboot.common.web.QueryResultDto;
-import cn.jboost.springboot.logging.annotation.LogInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,6 @@ import java.util.stream.Collectors;
  * @Author ronwxy
  * @Date 2019/6/20 18:11
  */
-@LogInfo
 public abstract class BaseAdapterController<T extends BaseDomain, R extends Serializable> {
 
     protected Class<T> domainClass;
@@ -69,11 +66,11 @@ public abstract class BaseAdapterController<T extends BaseDomain, R extends Seri
     }
 
     @GetMapping("paginate")
-    public QueryResultDto<R> paginateByCondition(@ModelAttribute T t,
+    public QueryResult<R> paginateByCondition(@ModelAttribute T t,
                                                  @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                  @RequestParam(value = "rows", defaultValue = "10") Integer rows) {
         QueryResult<T> tmp = baseService.paginateQueryResult(t, page, rows);
-        return new QueryResultDto<>(tmp.totalRecords, tmp.data.stream().map(x -> beanAdapter.toDTO(x)).collect(Collectors.toList()));
+        return new QueryResult<>(tmp.totalRecords, tmp.data.stream().map(x -> beanAdapter.toDTO(x)).collect(Collectors.toList()));
     }
 
 

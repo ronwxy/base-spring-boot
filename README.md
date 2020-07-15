@@ -1,16 +1,15 @@
 
 ### 主要版本 
-- springboot 2.1.5.RELEASE 
-- spring 5.1.7.RELEASE
+- springboot 2.3.0.RELEASE 
 
 1.在pom.xml文件中引入依赖管理 
 ```xml
 <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.springboot.base</groupId>
+                <groupId>cn.jboost.springboot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>1.2-SNAPSHOT</version>
+                <version>1.3-SNAPSHOT</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -20,13 +19,13 @@
 2.在pom.xml文件中引入你想要使用的starters，如
 ```xml
 <dependency>
-            <groupId>com.springboot.base</groupId>
-            <artifactId>swagger-spring-boot-starter</artifactId>
+            <groupId>cn.jboost.springboot</groupId>
+            <artifactId>web-spring-boot-starter</artifactId>
 </dependency>
 ```
 3.在项目的配置文件中配置starters需要的相关配置属性 
 
-- swagger-spring-boot-starter
+- web-spring-boot-starter
 
 ```yaml
     swagger:

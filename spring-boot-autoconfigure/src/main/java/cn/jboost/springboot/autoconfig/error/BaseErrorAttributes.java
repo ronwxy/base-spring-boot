@@ -2,6 +2,7 @@ package cn.jboost.springboot.autoconfig.error;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.jboost.springboot.common.exception.ExceptionUtil;
+import cn.jboost.springboot.common.util.ResponseWrapper;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
@@ -44,7 +45,7 @@ public class BaseErrorAttributes extends DefaultErrorAttributes {
                 && !(error instanceof BindingResult)) {
             message = StringUtils.isEmpty(msgAttr) ? "No message available" : msgAttr;
         }
-        ErrorResponse errorResponse = new ErrorResponse(status, message, trace);
+        ResponseWrapper errorResponse = new ResponseWrapper(status, message, trace);
         return BeanUtil.beanToMap(errorResponse);
     }
 

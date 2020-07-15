@@ -1,6 +1,6 @@
 package cn.jboost.springboot.autoconfig.redis.client;
 
-import cn.jboost.springboot.common.jackson.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -66,7 +66,7 @@ public class RedisClientAutoConfiguration extends CachingConfigurerSupport {
             sb.append(target.getClass().getName());
             sb.append(method.getName());
             for (Object obj : params) {
-                sb.append(JsonUtil.toJson(obj).hashCode());
+                sb.append(JSONUtil.toJsonStr(obj).hashCode());
             }
             return sb.toString();
         };

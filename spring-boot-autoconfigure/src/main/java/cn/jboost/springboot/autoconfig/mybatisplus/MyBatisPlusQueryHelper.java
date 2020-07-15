@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.MyBatisSystemException;
@@ -20,7 +19,6 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 public class MyBatisPlusQueryHelper {
@@ -223,40 +221,6 @@ public class MyBatisPlusQueryHelper {
 
     private static final String ASC = "asc";
     private static final String DESC = "desc";
-
-    /**
-     * 将自定义分页对象转换为mybatis-plus的分页对象
-     *
-     * @param page
-     * @param count
-     * @return
-     */
-    public static Page buildPage(cn.jboost.springboot.common.web.Page page, boolean count) {
-        return buildPage(null, page, count);
-    }
-
-    /**
-     * 将自定义分页对象转换为mybatis-plus的分页对象
-     *
-     * @param target 目标实体类
-     * @param page   自定义分页对象
-     * @param <T>
-     * @return
-     * @Param count 是否执行count查询
-     */
-    public static <T> Page buildPage(Class<T> target, cn.jboost.springboot.common.web.Page page, boolean count) {
-        if (Objects.isNull(page)) {
-            return null;
-        }
-        Page p = new Page();
-        p.setCurrent(page.getPage());
-        p.setSize(page.getSize());
-        p.setSearchCount(count);
-        if (!Objects.isNull(target)) {
-            p.setOrders(buildOrderItems(target, page.getSort()));
-        }
-        return p;
-    }
 
     /**
      * 根据排序字符串构建OrderItem列表，升序、降序部分最多均只支持两个字段

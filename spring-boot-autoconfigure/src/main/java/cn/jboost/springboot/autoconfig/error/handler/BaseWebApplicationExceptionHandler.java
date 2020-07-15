@@ -1,9 +1,9 @@
 package cn.jboost.springboot.autoconfig.error.handler;
 
-import cn.jboost.springboot.autoconfig.error.ErrorResponse;
 import cn.jboost.springboot.common.exception.BizException;
 import cn.jboost.springboot.common.exception.CommonErrorCodeEnum;
 import cn.jboost.springboot.common.exception.ExceptionUtil;
+import cn.jboost.springboot.common.util.ResponseWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -90,7 +90,7 @@ public class BaseWebApplicationExceptionHandler extends ResponseEntityExceptionH
     }
 
     protected ResponseEntity<Object> asResponseEntity(HttpStatus status, String message, Exception ex) {
-        ErrorResponse errorResponse = new ErrorResponse(status.value(), message);
+        ResponseWrapper errorResponse = new ResponseWrapper(status.value(), message);
         //是否包含异常的stack trace
         if (includeStackTrace) {
             errorResponse.setTrace(ExceptionUtil.extractStackTrace(ex.getCause()));

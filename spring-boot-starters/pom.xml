@@ -7,7 +7,7 @@
     <parent>
         <groupId>cn.jboost.springboot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.3-SNAPSHOT</version>
         <relativePath>../spring-boot-dependencies</relativePath>
     </parent>
 
@@ -18,7 +18,6 @@
         <module>qiniu-spring-boot-starter</module>
         <module>tkmapper-spring-boot-starter</module>
         <module>aoplog-spring-boot-starter</module>
-        <module>swagger-spring-boot-starter</module>
         <module>alimq-spring-boot-starter</module>
         <module>druid-spring-boot-starter</module>
         <module>error-spring-boot-starter</module>
@@ -30,6 +29,7 @@
         <module>baiduocr-spring-boot-starter</module>
         <module>mybatisplus-spring-boot-starter</module>
         <module>redis-spring-boot-starter</module>
+        <module>limiter-spring-boot-starter</module>
     </modules>
     <dependencies>
         <dependency>

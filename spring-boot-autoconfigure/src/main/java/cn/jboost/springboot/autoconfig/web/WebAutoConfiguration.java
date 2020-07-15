@@ -1,6 +1,7 @@
 package cn.jboost.springboot.autoconfig.web;
 
 import cn.jboost.springboot.autoconfig.web.filter.ExceptionHandlerFilter;
+import cn.jboost.springboot.autoconfig.web.filter.RequestIdFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -31,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -88,10 +90,32 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     public FilterRegistrationBean exceptionHandlerFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setFilter(new ExceptionHandlerFilter());
-        filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE); //将该filter放在最前面
+        filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + 1); //将该filter放在最前面
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }
+
+    /**
+     * 添加RequestId
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean requestIdFilter() {
+        RequestIdFilter reqestIdFilter = new RequestIdFilter();
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(reqestIdFilter);
+        List<String> urlPatterns = Collections.singletonList("/*");
+        registrationBean.setUrlPatterns(urlPatterns);
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + 2);
+        return registrationBean;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(ResponseWrapperAdvice.class)
+    public ResponseWrapperAdvice responseWrapperAdvice(){
+        return new ResponseWrapperAdvice();
+    }
+
 
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter converter =new MappingJackson2HttpMessageConverter(objectMapper());
