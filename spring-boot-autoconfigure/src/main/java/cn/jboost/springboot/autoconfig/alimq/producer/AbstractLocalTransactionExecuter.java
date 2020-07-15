@@ -1,6 +1,6 @@
 package cn.jboost.springboot.autoconfig.alimq.producer;
 
-import cn.jboost.springboot.common.jackson.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.transaction.LocalTransactionExecuter;
 import com.aliyun.openservices.ons.api.transaction.TransactionStatus;
@@ -25,7 +25,7 @@ public abstract class AbstractLocalTransactionExecuter implements LocalTransacti
          * 如果业务本身是幂等的，可以忽略，否则需要利用 msgId 或 crc32Id 来做幂等
          * 如果要求消息绝对不重复，推荐做法是对消息体 body 使用 crc32或 md5来防止重复消息
          */
-        Map<String, Object> msgMap = (Map<String, Object>) JsonUtil.fromJson(message.getBody(), Map.class);
+        Map<String, Object> msgMap = (Map<String, Object>) JSONUtil.toBean(new String(message.getBody()), Map.class);
         try {
             boolean isCommit = this.localTranExecute(arg);
             if (isCommit) {

@@ -1,8 +1,8 @@
 package cn.jboost.springboot.autoconfig.alimns.executor.task.send;
 
+import cn.hutool.json.JSONUtil;
 import cn.jboost.springboot.autoconfig.alimns.executor.MessageDto;
 import cn.jboost.springboot.autoconfig.alimns.executor.MnsExecutor;
-import cn.jboost.springboot.common.jackson.JsonUtil;
 import com.aliyun.mns.client.AsyncCallback;
 import com.aliyun.mns.model.BaseMessage;
 
@@ -23,7 +23,7 @@ public abstract class AbstractSendTask implements Runnable {
 		Map<String, Object> messageMap = new HashMap<>();
 		messageMap.put("_id", messageDto.getId());
 		messageMap.put("content", messageDto.getMessageTxt());
-		return JsonUtil.toJson(messageMap);
+		return JSONUtil.toJsonStr(messageMap);
 	}
 
 	protected class DefaultAsyncCallback<T extends BaseMessage> implements AsyncCallback<T> {

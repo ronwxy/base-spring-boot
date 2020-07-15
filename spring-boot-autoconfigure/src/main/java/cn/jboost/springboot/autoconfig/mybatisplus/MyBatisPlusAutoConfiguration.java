@@ -25,8 +25,4 @@ public class MyBatisPlusAutoConfiguration {
         return new TimeSqlInterceptor();
     }
 
-    @Bean
-    public JboostSqlInjector jboostSqlInjector() {
-        return new JboostSqlInjector();
-    }
 }

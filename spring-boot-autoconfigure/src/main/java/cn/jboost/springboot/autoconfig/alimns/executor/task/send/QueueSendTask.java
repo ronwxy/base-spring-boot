@@ -1,12 +1,12 @@
 package cn.jboost.springboot.autoconfig.alimns.executor.task.send;
 
 
-import com.aliyun.mns.client.CloudQueue;
-import com.aliyun.mns.model.Message;
+import cn.hutool.core.map.MapUtil;
 import cn.jboost.springboot.autoconfig.alimns.executor.MessageDto;
 import cn.jboost.springboot.autoconfig.alimns.executor.MnsClientFactory;
 import cn.jboost.springboot.autoconfig.alimns.executor.MnsExecutor;
-import org.apache.commons.collections4.MapUtils;
+import com.aliyun.mns.client.CloudQueue;
+import com.aliyun.mns.model.Message;
 
 public class QueueSendTask extends AbstractSendTask {
 
@@ -29,12 +29,12 @@ public class QueueSendTask extends AbstractSendTask {
 		Message message = new Message();
 		message.setMessageBody(createMnsTxt(), Message.MessageBodyType.RAW_STRING);
 
-		Integer delaySeconds = MapUtils.getInteger(messageDto.getMessageAttributes(), "delaySeconds");
+		Integer delaySeconds = MapUtil.getInt(messageDto.getMessageAttributes(), "delaySeconds");
 		if (delaySeconds != null) {
 			message.setDelaySeconds(delaySeconds);
 		}
 
-		Integer priority = MapUtils.getInteger(messageDto.getMessageAttributes(), "priority");
+		Integer priority = MapUtil.getInt(messageDto.getMessageAttributes(), "priority");
 		if (priority != null) {
 			message.setPriority(priority);
 		}

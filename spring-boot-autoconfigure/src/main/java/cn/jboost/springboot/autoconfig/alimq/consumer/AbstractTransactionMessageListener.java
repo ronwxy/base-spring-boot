@@ -1,6 +1,6 @@
 package cn.jboost.springboot.autoconfig.alimq.consumer;
 
-import cn.jboost.springboot.common.jackson.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
@@ -19,7 +19,7 @@ public abstract class AbstractTransactionMessageListener implements MessageListe
         String messageBody = new String(message.getBody());
         log.info("receive message. [topic: {}, tag: {}, body: {}, msgId: {}, startDeliverTime: {}]", message.getTopic(), message.getTag(), messageBody, message.getMsgID(), message.getStartDeliverTime());
         try {
-            Map<String, Object> msgMap = (Map<String, Object>) JsonUtil.fromJson(message.getBody(), Map.class);
+            Map<String, Object> msgMap = (Map<String, Object>) JSONUtil.toBean(messageBody, Map.class);
             handle(message.getMsgID(), msgMap);
             log.info("handle message success.");
             return Action.CommitMessage;

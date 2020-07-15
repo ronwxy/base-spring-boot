@@ -2,8 +2,8 @@ package cn.jboost.springboot.autoconfig.alioss;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONObject;
-import cn.jboost.springboot.common.io.FileUtil;
-import cn.jboost.springboot.common.web.ContentTypeUtil;
+import cn.jboost.springboot.common.util.FileUtil;
+import cn.jboost.springboot.common.util.ContentTypeUtil;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.*;

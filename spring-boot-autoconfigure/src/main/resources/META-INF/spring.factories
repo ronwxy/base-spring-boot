@@ -10,8 +10,9 @@ cn.jboost.springboot.autoconfig.error.ExceptionHandlerAutoConfiguration,\
 cn.jboost.springboot.autoconfig.mybatisplus.MyBatisPlusAutoConfiguration,\
 cn.jboost.springboot.autoconfig.qiniu.QiniuAutoConfiguration,\
 cn.jboost.springboot.autoconfig.redis.clients.RedisClientsAutoConfiguration,\
-cn.jboost.springboot.autoconfig.swagger.Swagger2AutoConfiguration,\
 cn.jboost.springboot.autoconfig.tkmapper.MapperAutoConfiguration,\
-cn.jboost.springboot.autoconfig.web.WebAutoConfiguration
+cn.jboost.springboot.autoconfig.web.WebAutoConfiguration,\
+cn.jboost.springboot.autoconfig.web.Swagger2AutoConfiguration,\
+cn.jboost.springboot.autoconfig.limiter.RedisRateLimiterAutoConfiguration
 
 

@@ -1,6 +1,7 @@
 package cn.jboost.springboot.autoconfig.tkmapper.typehandlers;
 
-import cn.jboost.springboot.common.jackson.JsonUtil;
+import cn.hutool.json.JSONUtil;
+import cn.jboost.springboot.autoconfig.tkmapper.util.JsonUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -19,7 +20,7 @@ import java.sql.SQLException;
 public class JsonTypeHandler extends BaseTypeHandler<Object> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
-        ps.setObject(i, JsonUtil.toJson(parameter));
+        ps.setObject(i, JSONUtil.toJsonStr(parameter));
     }
 
     @Override

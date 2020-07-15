@@ -1,7 +1,5 @@
 package cn.jboost.springboot.autoconfig.tkmapper.util;
 
-import cn.jboost.springboot.common.web.QueryResultDto;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -28,9 +26,7 @@ public class QueryResult<T> {
         this.data = Collections.emptyList();
     }
 
-    public QueryResultDto<T> toQueryResultDto() {
-        return new QueryResultDto<>(totalRecords, data);
-    }
+
 
 
 }

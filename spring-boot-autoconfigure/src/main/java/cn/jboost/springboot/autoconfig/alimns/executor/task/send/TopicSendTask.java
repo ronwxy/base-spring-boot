@@ -1,15 +1,15 @@
 package cn.jboost.springboot.autoconfig.alimns.executor.task.send;
 
 
+import cn.hutool.core.map.MapUtil;
+import cn.jboost.springboot.autoconfig.alimns.executor.MessageDto;
+import cn.jboost.springboot.autoconfig.alimns.executor.MnsClientFactory;
+import cn.jboost.springboot.autoconfig.alimns.executor.MnsExecutor;
 import com.aliyun.mns.client.CloudTopic;
 import com.aliyun.mns.model.MailAttributes;
 import com.aliyun.mns.model.MessageAttributes;
 import com.aliyun.mns.model.RawTopicMessage;
 import com.aliyun.mns.model.TopicMessage;
-import cn.jboost.springboot.autoconfig.alimns.executor.MessageDto;
-import cn.jboost.springboot.autoconfig.alimns.executor.MnsClientFactory;
-import cn.jboost.springboot.autoconfig.alimns.executor.MnsExecutor;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -40,33 +40,33 @@ public class TopicSendTask extends AbstractSendTask {
 
 		boolean isSet = false;
 		Map<String, Object> attributes = messageDto.getMessageAttributes();
-		if (MapUtils.isNotEmpty(attributes)) {
+		if (MapUtil.isNotEmpty(attributes)) {
 			MailAttributes mailAttributes = new MailAttributes();
 
-			String accountName = MapUtils.getString(attributes, "accountName");
+			String accountName = MapUtil.getStr(attributes, "accountName");
 			if (StringUtils.isNotEmpty(accountName)) {
 				mailAttributes.setAccountName(accountName);
 				isSet = true;
 			}
-			Integer addressType = MapUtils.getInteger(attributes, "addressType");
+			Integer addressType = MapUtil.getInt(attributes, "addressType");
 			if (addressType != null) {
 				mailAttributes.setAddressType(addressType);
 				isSet = true;
 			}
 
-			Boolean html = MapUtils.getBoolean(attributes, "html");
+			Boolean html = MapUtil.getBool(attributes, "html");
 			if (html != null) {
 				mailAttributes.setHtml(html);
 				isSet = true;
 			}
 
-			Boolean replyToAddress = MapUtils.getBoolean(attributes, "replyToAddress");
+			Boolean replyToAddress = MapUtil.getBool(attributes, "replyToAddress");
 			if (replyToAddress != null) {
 				mailAttributes.setReplyToAddress(replyToAddress);
 				isSet = true;
 			}
 
-			String subject = MapUtils.getString(attributes, "subject");
+			String subject = MapUtil.getStr(attributes, "subject");
 			if (StringUtils.isNotEmpty(subject)) {
 				mailAttributes.setSubject(subject);
 				isSet = true;

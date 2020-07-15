@@ -1,6 +1,6 @@
 package cn.jboost.springboot.autoconfig.redis.clients;
 
-import cn.jboost.springboot.common.NamedContextFactory;
+import cn.jboost.springboot.autoconfig.redis.NamedContextFactory;
 
 public class RedisClientsFactory extends NamedContextFactory<RedisClientSpecification> {
     static final String NAMESPACE = "redisClient";
