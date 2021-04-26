@@ -25,7 +25,7 @@
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <apache-commons-lang3.version>3.7</apache-commons-lang3.version>
-        <apache-commons-io.version>2.6</apache-commons-io.version>
+        <apache-commons-io.version>2.7</apache-commons-io.version>
         <apache-commons-collections4.version>4.1</apache-commons-collections4.version>
         <apache-commons-pool2.version>2.6.0</apache-commons-pool2.version>
         <dom4j.version>1.6.1</dom4j.version>
